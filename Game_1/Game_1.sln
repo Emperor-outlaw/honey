@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Game_1", "Game_1\Game_1.vcxproj", "{563407A5-814C-4398-A393-007F261018C4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{563407A5-814C-4398-A393-007F261018C4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{563407A5-814C-4398-A393-007F261018C4}.Debug|Win32.Build.0 = Debug|Win32
+		{563407A5-814C-4398-A393-007F261018C4}.Release|Win32.ActiveCfg = Release|Win32
+		{563407A5-814C-4398-A393-007F261018C4}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
