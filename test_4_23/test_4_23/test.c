@@ -33,3 +33,18 @@
 //	printf("%u\n", ret);
 //	return 0;
 //}
+//不使用（a+b）/2  这种方法计算两数之和的一半
+#include <stdio.h>
+int main()
+{
+	int a = 5;
+    int b = 4;
+//	int n = (a + b) / 2;
+	//int n = (a + b) >> 1;
+//	int n = (a >> 1) + (b >> 1);
+	(a&b)+
+	printf("%d\n", n);
+
+
+	return 0;
+}
