@@ -34,8 +34,10 @@ int main()
 			SEARCH_Contact(&con);
 			break;
 		case MODIFY:
+			MODIFY_Contact(&con);
 			break;
 		case SORT:
+			SORT_Contact(&con);
 			break;
 		case SHOW:
 			SHOW_Contact(&con);
