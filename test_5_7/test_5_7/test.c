@@ -108,4 +108,281 @@
 //}
 
 //常见的动态内存错误
-//1.对空指针的解应用操作
+////1.对空指针的解应用操作
+//#include <stdio.h>
+//#include <stdlib.h>
+////void test()
+//{
+//	int* p = (int*)malloc(sizeof(int));
+//	*p = 20;//如果p的值是NULL，就会有问题
+//	free(p);
+//	p = NULL;
+//}
+//2.对动态空间的越界访问
+//void test()
+//{
+//	int i = 0; 
+//	int* p = (int*)malloc(10 * sizeof(int));
+//	if (p == NULL)
+//	{
+//		return;
+//	}
+//	for (i = 0; i <=10; i++)
+//	{
+//		*(p + i) = i;//当i是10的时候越界访问
+//	}
+//	free(p);
+//	p = NULL;
+//}
+////3.使用free释放一块动态开辟内存的一部分
+//void test() 
+//{
+//	int a = 10; 
+//	int *p = &a; 
+//	free(p);
+//	p = NULL;
+//} 
+////4.对同一块动态内存多次释放
+//void test()
+//{
+//	int *p = (int*)malloc(100);
+//	free(p);
+//  p = NULL;
+//	free(p);//重复释放
+//}
+//int main()
+//{
+//	test();
+//	return 0;
+//}
+////5.内存泄漏（动态内存忘记释放）
+//int main()
+//{
+//	while (1)
+//	{
+//		malloc(1000);
+//	}
+//	return 0;
+//}
+
+//下面程序的运行结果
+//1.
+//#include <stdio.h>
+//#include <stdlib.h>
+//#include <string.h>
+//void Getmemory(char* p)//此处的p只是str的一个临时拷贝（只是把str传给了p）
+//{
+//	p = (char*)malloc(100);//动态内存开辟了一个空间，把开辟空间的起始地址赋值给了P;这个函数调用结束后p被销毁返回给了内存（malloc开辟的空间还在（若没有释放整个程序结束后，系统会释放））
+//}//此函数并没有返回值
+//void test(void)
+//{
+//	char * str = NULL;
+//	Getmemory(str);//这个函数调用结束后。str依然是NULL
+//	strcpy(str, "hello world");//拷贝函数对NULL解应用操作，程序会崩溃
+//	printf(str);
+//	printf("%s\n", str);//两中printf都可以
+//}
+//int main()
+//{
+//  test();
+//	return 0;
+//}
+//对上面程序的改正(第一种)
+//void Getmemory(char** p)//传str的地址，对str进行操作
+//{
+//	if ((char*)malloc(100) == NULL)
+//	{
+//		printf("exit\n");
+//		return;
+//	}
+//	*p = (char*)malloc(100);
+//}
+//void test()
+//{
+//	char* str = NULL;
+//	Getmemory(&str);
+//	strcpy(str, "hello world");
+//	printf(str);
+//	free(str);
+//	str = NULL;
+//}
+//int main()
+//{
+//	test();
+//	return 0;
+//}
+//（第二种）
+//char* Getmemory(char* p)//有返回值，将返回值赋值给str
+//{
+//	return p = (char*)malloc(100);
+//}
+//void test()
+//{
+//	char* str = NULL;
+//	str = Getmemory(str);
+//	if (NULL == str)
+//	{
+//		return;
+//	}
+//	strcpy(str, "hello world");
+//	printf(str);
+//	free(str);
+//	str = NULL;
+//}
+//int main()
+//{
+//	test();
+//	return 0;
+//}
+
+//2.
+//#include <stdio.h>
+//char* Getmemory(void)
+//{
+//	char p[] = "hello world";
+//	return p;
+//}//函数调用完后，p变量那块空间会被销毁，已不是“hello world”
+//void test(void)
+//{
+//	char* str = NULL;
+//	str = Getmemory();//返回了局部变量或者临时变量的地址；（此函数调用完之后将p（地址）的值赋给了str，str指向的那块空间还给了内存，已经不是“hello world”）
+//	printf(str);
+//}
+//int main()
+//{
+//	test();
+//	return 0;
+//}
+//#include <stdio.h>
+//char* Getmemory(void)
+//{
+//	char* p = "hello world";
+//	return p;
+//}//P指向的是字符串常量，不是变量
+//void test(void)
+//{
+//	char* str = NULL;
+//	str = Getmemory();
+//	printf(str);
+//}
+//int main()
+//{
+//	test();
+//	return 0;
+//}
+
+//3.
+//#include <stdio.h>
+//#include <string.h>
+//#include <stdlib.h>
+//void GetMemory(char **p, int num) 
+//{
+//	*p = (char *)malloc(num);//该程序使用完后没有释放空间（内存泄漏）
+//}
+//void test(void)
+//{
+//	char *str = NULL;
+//	GetMemory(&str, 100);
+//	strcpy(str, "hello");
+//	printf(str);
+//	////free(str);
+//	////str = NULL;
+//}
+//int main()
+//{
+//	test();
+//	return 0;
+//}
+//4.
+//#include <stdio.h>
+//#include <string.h>
+//void test(void) 
+//{
+//	char *str = (char *)malloc(100);  
+//	strcpy(str, "hello");
+//	free(str);
+//	if (str != NULL)  
+//	{
+//		strcpy(str, "world");//非法访问（free已经将空间还给了内存）   
+//		printf(str); 
+//	}
+//	//修改
+//	char *str = (char *)malloc(100);
+//	strcpy(str, "hello");
+//	free(str);
+//	str = NULL;//将str置NULL
+//	if (str != NULL)//然后判断不是空就可以拷贝
+//	{
+//		strcpy(str, "world");   
+//		printf(str);
+//	}
+//}
+//int main()
+//{
+//	test();
+//	return 0;
+//}
+//柔性数组（flexible array）——结构中的最后一个元素允许是未知大小的数组，这就叫做柔性数组成员
+//特点：
+//结构中的柔性数组成员前面必须至少一个其他成员。 
+//sizeof 返回的这种结构大小不包括柔性数组的内存。 
+//包含柔性数组成员的结构用malloc ()函数进行内存的动态分配，并且分配的内存应该大于结构的大小，以适应 柔性数组的预期大小
+//#include <stdio.h>
+//不同的编译器可能表示不同
+//（第一种）
+//typedef struct st_type
+//{
+//	int i;
+//	int a[];//柔性数组成员
+//}S;
+////（第二种）
+////typedef struct st_type
+////{
+////	int i;
+////	int a[0];//柔性数组成员
+////}S;
+//int main()
+//{
+//////	printf("%d", sizeof(S));//4
+////	//柔性数组的使用(一般和malloc使用)
+////	int i = 0;
+////	S* p = (S*)malloc(sizeof(S) + 10 * sizeof(int));//这样柔性数组成员a，相当于获得了100个整型元素的连续空间
+////	p->i = 100;
+////	for (i = 0; i < 10; i++)
+////	{
+////		p->a[i] = i;
+////	}
+////	free(p);
+//	return 0;
+//}
+
+//柔性数组的使用
+//#include <stdio.h>
+//#include <stdlib.h>
+//typedef struct S
+//{
+//	int i;
+//	int * a;
+//}S;
+//int main()
+//{
+//	int i = 0;
+//	S* p = malloc(sizeof(S));
+//	p->i = 100;
+//	p->a = (int*)malloc(10 * sizeof(int));
+//	for (i = 0; i < 10; i++)
+//	{
+//		p->a[i] = i;
+//	}
+//	free(p->a);
+//	p->a = NULL;
+//	free(p);
+//	p = NULL;
+//	return 0;
+//}
+//上面两种代码使用可以完成同样的功能
+//代码1的好处：1.方便释放（一次分配，一次释放）
+//2.有利于访问速度（连续的内存有益于提高访问速度，也有益于减少内存碎片）
+
+
+
