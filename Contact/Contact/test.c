@@ -43,6 +43,9 @@ int main()
 			SHOW_Contact(&con);
 			break;
 		case EXIT:
+			free(con.date);
+			con.date = NULL;
+			con.Capacity = 0;
 			printf("ÍË³öÍ¨Ñ¶Â¼£¡\n");
 			break;
 		default:

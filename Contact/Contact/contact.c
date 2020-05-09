@@ -24,7 +24,7 @@ static void print(Contact* pcon,S* ppos)
 }
 
  S* Find_byname(Contact* pcon,char* pname)
-{
+ {
 	assert(pcon && pname);
 	memset(&ret, 0, sizeof(ret));
 	int flag = 0;
@@ -152,7 +152,14 @@ void InitContact(Contact* pcon)
 {
 	assert(pcon);
 	pcon->sz = 0;
-	memset(pcon->date, 0, sizeof(pcon->date));
+	/*memset(pcon->date, 0, sizeof(pcon->date));*/
+	pcon->date = (Peoinfor*)calloc(Capacity_MAX, sizeof(Peoinfor));
+	if (pcon->date == NULL)
+	{
+		printf("%s", strerror(errno));
+		return;
+	}
+	pcon->Capacity = Capacity_MAX;
 }
 
 void SEARCH_Contact(Contact* pcon)
@@ -231,16 +238,26 @@ void SEARCH_Contact(Contact* pcon)
 		}
 	} while (input);
 }
-
+void Check_Capacity(Contact* pcon)
+{
+	assert(pcon);
+	//若不够增容（每次增加两个）
+	if (pcon->sz == pcon->Capacity)
+	{
+		Peoinfor* ptr = (Peoinfor*)realloc(pcon->date, (pcon->Capacity + 2) * sizeof(Peoinfor));
+		if (NULL != ptr)
+		{
+			pcon->date = ptr;
+			pcon->Capacity += 2;
+			printf("增容成功\n");
+		}
+	}
+}
 void ADD_Contact(Contact* pcon)
 {
 	assert(pcon);
 	//判断通讯录是否已满
-	if (pcon->sz == MAX)
-	{
-		printf("通讯录已满！\n");
-		return;
-	}
+	Check_Capacity(pcon);
 	printf("请输入姓名:>");
 	scanf("%s", pcon->date[pcon->sz].NAME);
 	printf("请输入性别:>");
