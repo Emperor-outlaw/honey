@@ -1,7 +1,27 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 #include "contact.h"
-S ret = { { 0 }, 0 };
-
+S ret = { 0 };
+void Check_Capacity(Contact* pcon)
+{
+	assert(pcon);
+	//若不够增容（每次增加两个）
+	if (pcon->sz == pcon->Capacity)
+	{
+		Peoinfor* ptr = (Peoinfor*)realloc(pcon->date, (pcon->Capacity + 2) * sizeof(Peoinfor));
+		if (NULL != ptr)
+		{
+			pcon->date = ptr;
+			pcon->Capacity += 2;
+			printf("增容成功\n");
+		}
+	}
+}
+void Destory_Contact(Contact* pcon)
+{
+	free(pcon->date);
+	pcon->date = NULL;
+	pcon->Capacity = 0;
+}
 void menu1()
 {
 	printf("************************************************\n");
@@ -148,6 +168,53 @@ S* Find_byaddr(Contact* pcon,char* paddr)
 		return &ret;
 	}
 }
+void Load_Contact(Contact* pcon)
+{
+	int i = 0;
+	//Peoinfor tmp = { 0 };
+	FILE* pfread = fopen("contact.txt", "rb");
+	if (pfread == NULL)
+	{
+		printf("%s", strerror(errno));
+		return;
+	}
+	//1.第一种
+	while (fread(pcon->date + i, sizeof(Peoinfor), 1, pfread))
+	{
+		pcon->sz++;
+		i++;
+		Check_Capacity(pcon);
+	}
+	//2.第二种
+	//while (fread(&tmp, sizeof(Peoinfor), 1, pfread))
+	//{
+	//	Check_Capacity(pcon);
+	//	pcon->date[pcon->sz] = tmp;
+	//	pcon->sz++;
+    //}
+	fclose(pfread);
+	pfread = NULL;
+}
+//读入动态空间（未完成）
+//void Load_Contact1(Contact* pcon)
+//{
+//	int i = 0;
+//	FILE* pfread = NULL;
+//	pfread = fopen("contact.txt", "r");
+//	if (fread == NULL)
+//	{
+//		printf("%s", strerror(errno));
+//		return;
+//	}
+//	while (fscanf(pfread, "%s%s%d%s%s", pcon->date[i].NAME, pcon->date[i].SEX, &(pcon->date[i].AGE), pcon->date[i].TELE, pcon->date[i].ADDR)==1)
+//	{
+//		pcon->sz++;
+//		i++;
+//		Check_Capacity(pcon);
+//	}
+//	fclose(pfread);
+//	pfread = NULL;
+//}
 void InitContact(Contact* pcon)
 {
 	assert(pcon);
@@ -160,6 +227,11 @@ void InitContact(Contact* pcon)
 		return;
 	}
 	pcon->Capacity = Capacity_MAX;
+	////将数据转到动态空间(二进制形式)
+	Load_Contact(pcon);
+	////将数据转到动态空间(文本形式)
+	//Load_Contact1(pcon);（此函数在上面，未完成）
+
 }
 
 void SEARCH_Contact(Contact* pcon)
@@ -237,21 +309,6 @@ void SEARCH_Contact(Contact* pcon)
 			break;
 		}
 	} while (input);
-}
-void Check_Capacity(Contact* pcon)
-{
-	assert(pcon);
-	//若不够增容（每次增加两个）
-	if (pcon->sz == pcon->Capacity)
-	{
-		Peoinfor* ptr = (Peoinfor*)realloc(pcon->date, (pcon->Capacity + 2) * sizeof(Peoinfor));
-		if (NULL != ptr)
-		{
-			pcon->date = ptr;
-			pcon->Capacity += 2;
-			printf("增容成功\n");
-		}
-	}
 }
 void ADD_Contact(Contact* pcon)
 {
@@ -451,7 +508,10 @@ void MODIFY_Contact(Contact* pcon)
 	pos = Find_byname(pcon, Name);
 	// 3.修改联系人
 	if (pos->tmp == -1)
+	{
 		printf("没有该联系人！\n");
+		return;
+	}
 	if ((pos->tmp) > 1)
 	{
 		printf("此通讯录有多个信息相同的联系人！\n");
@@ -603,3 +663,43 @@ void SHOW_Contact(Contact* pcon)
 		printf("%-8s\t%-5s\t%-5s\t%-12s\t%-20s\n", "[空]", "[空]", "[空]", "[空]", "[空]");
 	}
 }
+//二进制形式保存
+void Save_Contact(Contact* pcon)
+{
+	FILE* pfwrite = NULL;
+	int i = 0;
+	pfwrite = fopen("contact.txt", "wb");
+	if (pfwrite == NULL)
+	{
+		printf("%s", strerror(errno));
+		return;
+	}
+	//写文件
+	for (i = 0; i < pcon->sz; i++)
+	{
+		fwrite(pcon->date + i, sizeof(Peoinfor), 1, pfwrite);
+	}
+	//关闭文件
+	fclose(pfwrite);
+	pfwrite = NULL;
+}
+//文本形式保存
+//void Save1_Contact(Contact* pcon)
+//{
+//	FILE* pfwrite = NULL;
+//	int i = 0;
+//	pfwrite = fopen("contact.txt", "w");
+//	if (pfwrite == NULL)
+//	{
+//		printf("%s", strerror(errno));
+//		return;
+//	}
+//	//写文件
+//	for (i = 0; i < pcon->sz; i++)
+//	{
+//		fprintf(pfwrite, "%s%s%d%s%s", pcon->date[i].NAME, pcon->date[i].SEX, pcon->date[i].AGE, pcon->date[i].TELE, pcon->date[i].ADDR);
+//	}
+//	//关闭文件
+//	fclose(pfwrite);
+//	pfwrite = NULL;
+//}

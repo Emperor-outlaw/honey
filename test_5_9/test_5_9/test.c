@@ -64,27 +64,27 @@
 
 //文本行输入函数——fgets(适用所有输入流)
 //char *fgets(char *string, int n, FILE *stream);
-//#include <stdio.h>
-//int main()
-//{
-//	char buf[20] = { 0 };
-//	FILE* pf = fopen("test.txt", "r");
-//	if (pf == NULL)
-//	{
-//		return 0;
-//	}
-//	//读文件——每次读一行
-//	fgets(buf, 20, pf);
-//	printf("%s", buf);
-//	fgets(buf, 20, pf);
-//	printf("%s", buf);
-//	fgets(buf, 20, pf);
-//	printf("%s", buf);
-//	//关闭文件
-//	fclose(pf);
-//	pf = NULL;
-//	return 0;
-//}
+#include <stdio.h>
+int main()
+{
+	char buf[1000] = { 0 };
+	FILE* pf = fopen("test1.txt", "r");
+	if (pf == NULL)
+	{
+		return 0;
+	}
+	//读文件——每次读一行
+	fgets(buf, 1000, pf);
+	printf("%s", buf);
+	/*fgets(buf, 20, pf);
+	printf("%s", buf);
+	fgets(buf, 20, pf);
+	printf("%s", buf);*/
+	//关闭文件
+	fclose(pf);
+	pf = NULL;
+	return 0;
+}
 
 //文本行输出函数——fputs(适用于所有流)
 //#include <stdio.h>
@@ -316,18 +316,87 @@
 //2. 二进制文件的读取结束判断，判断返回值是否小于实际要读的个数。 
 //例如： 
 //fread判断返回值是否小于实际要读的个数。
-#include <stdio.h>
-int main()
-{
-	int ch = 0;
-	FILE* pf = fopen("test.txt", "r");
-	if (pf == NULL)
-		return 0;
-	while (fgetc())
-	//关闭文件
-	fclose(pf);
-	pf = NULL;
-	return 0;
-}
-
-
+//1.
+//#include <stdio.h>
+//int main()
+//{
+//	int ch = 0;
+//	FILE* pf = fopen("test.txt", "r");
+//	if (pf == NULL)
+//		return 0;
+//	while ((ch = fgetc(pf)) != EOF)
+//	{
+//		printf("%c", ch);
+//	}
+//	//关闭文件
+//	fclose(pf);
+//	pf = NULL;
+//	return 0;
+//}
+//#include <stdio.h>
+//int main()
+//{
+//	char arr[30] = { 0 };
+//	int ch = 0;
+//	FILE* pwrite = NULL;
+//	FILE* pread = NULL;
+//	pread = fopen("test.txt", "r");
+//	if (pread == NULL)
+//		return 0;
+//	pwrite = fopen("test1.txt", "w");
+//	if (pwrite == NULL)
+//	{
+//		fclose(pread);
+//		return 0;
+//	}
+//	//拷贝
+//	while ((ch = fgetc(pread)) != EOF)
+//	{
+//		fputc(ch, pwrite);
+//	}
+//	if (ferror(pread))//如果遇到错误这个会返回一个真
+//		puts("error when reading");
+//	else if (feof(pread))//遇到文件结束标志EOF,返回非0数字（也就是真）
+//		puts("end of file reached successfully");
+//	//关闭文件
+//	fclose(pread);
+//	fclose(pwrite);
+//	pread = NULL;
+//	pwrite = NULL;
+//	return 0;
+//}
+//#include <stdio.h>
+//int main()
+//{
+//	char arr[30] = { 0 };
+//	int ch = 0;
+//	FILE* pf = fopen("test.txt", "r");
+//	if (pf == NULL)
+//		return 0;
+//	while (fgets(arr,30,pf))
+//	{
+//		printf("%s", arr);
+//	}
+//	//关闭文件
+//	fclose(pf);
+//	pf = NULL;
+//	return 0;
+//}
+//2.
+//#include <stdio.h>
+//int main()
+//{
+//	char arr1[30] = { 0 };
+//	int ch = 0;
+//	FILE* pf = fopen("test1.txt", "r");
+//	if (pf == NULL)
+//		return 0;
+//	while (fread(arr1, 20,1, pf)>=1)
+//	{
+//		printf("%s", arr1);
+//	}
+//	//关闭文件
+//	fclose(pf);
+//	pf = NULL;
+//	return 0;
+//}

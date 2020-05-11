@@ -43,9 +43,11 @@ int main()
 			SHOW_Contact(&con);
 			break;
 		case EXIT:
-			free(con.date);
-			con.date = NULL;
-			con.Capacity = 0;
+			//将数据写成文件的形式(二进制)
+			Save_Contact(&con);
+			//将数据写成文件的形式(文本形式)
+			//Save1_Contact(&con);
+			Destory_Contact(&con);
 			printf("退出通讯录！\n");
 			break;
 		default:

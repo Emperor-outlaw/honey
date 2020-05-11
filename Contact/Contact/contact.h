@@ -60,6 +60,9 @@ void SHOW_Contact(Contact* pcon);
 void SEARCH_Contact(Contact* pcon);
 void MODIFY_Contact(Contact* pcon);
 void SORT_Contact(Contact* pcon);
+void Destory_Contact(Contact* pcon);
+void Save_Contact(Contact* pcon);
+//void Save1_Contact(Contact* pcon);
 
 S* Find_byname(Contact* pcon, char* pname);
 S* Find_byage(Contact* pcon, int* page);
