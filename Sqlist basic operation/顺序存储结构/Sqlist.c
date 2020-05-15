@@ -5,7 +5,7 @@ void Check_Listspace(SqlistPtr L)
 	if (L->length == L->list_size)
 	{
 		ElemType* ptr = NULL;
-		ptr = realloc(L->elem, (LIST_INIT_SIZE + LIST_INCREAMENT)*sizeof(ElemType));
+		ptr = realloc(L->elem, (LIST_INIT_SIZE + LIST_INCREAMENT+1)*sizeof(ElemType));
 		if (ptr != NULL)
 		{
 			L->elem = ptr;
@@ -21,7 +21,7 @@ void Check_Listspace(SqlistPtr L)
 Status List_init(SqlistPtr L)
 {
 	Status s = fail;
-	L->elem = (ElemType*)malloc((LIST_INIT_SIZE + 1)*sizeof(ElemType));
+	L->elem = (ElemType*)calloc(LIST_INIT_SIZE + 1, sizeof(ElemType));
 	if (L->elem)
 	{
 		L->length = 0;
@@ -30,33 +30,49 @@ Status List_init(SqlistPtr L)
 	}
 	return s;
 }
+Status List_Create(SqlistPtr L, ElemType arr[], int sz)
+{
+	Status s = fail;
+	List_init(L);
+	int i = 0;
+	for (i = 0; i < sz; i++)
+	{
+		Check_Listspace(L);
+		L->elem[i + 1] = arr[i];
+		L->length++;
+	}
+	if (L->length == sz)
+		s = success;
+	return s;
+}
+
 void List_Destory(SqlistPtr L)
 {
 	if (L)
 	{
-		if (L->elem)
-		{
-			free(L->elem);
-			L->elem = NULL;
-		}
+		free(L->elem);
+		L->elem = NULL;
 	}
 }
 void List_Clear(SqlistPtr L)
 {
 	if (L)
 	{
-		L->length = 0;
+		int i = L->length;
+		while (i)
+		{
+			L->elem[i] = 0;
+			i--;
+		}
 	}
 }
 int List_Empty(SqlistPtr L)
 {
-	if (L)
-		return (L->length == 0);
+	return L->length;
 }
 int List_size(SqlistPtr L)
 {
-	if (L)
-		return L->length;
+	return L->length;
 }
 Status List_Retrival(SqlistPtr L, int pos, ElemType *elem)
 {
@@ -79,7 +95,7 @@ Status List_Locate(SqlistPtr L, ElemType elem, int *pos)
 	{
 		for (i = 1; i <= L->length; i++)
 		{
-			if (elem = L->elem[i])
+			if (elem == L->elem[i])
 			{
 				*pos = i;
 				s = success;
@@ -165,7 +181,7 @@ void List_Print(SqlistPtr L)
 		}
 		for (i = 1; i <= L->length; i++)
 		{
-			printf("%d ", L->elem[i]);
+			printf("%-3d", L->elem[i]);
 			if (i % 10 == 0)            //每打印10个换行
 				printf("\n");
 		}

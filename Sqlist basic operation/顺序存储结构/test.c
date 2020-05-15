@@ -16,20 +16,22 @@ void menu()
 int main()
 {
 	int i = 0;
-	int opt = 0;
 	int pos = 0;
+	int input = 0;
 	ElemType elem = 0;
 	Status s = 0;
 	int len = 0;
 	Sqlist list;//创建一个线性表
 	SqlistPtr L = &list;
-	List_init(L);//初始化线性表
+	int arr[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+	int sz = sizeof(arr)/sizeof(arr[0]);
+	List_Create(L, arr, sz);//初始化线性表
 	do
 	{
 		menu();
 		printf("请输入你的选择:>");
-		scanf("%d", &opt);
-		switch (opt)
+		scanf("%d", &input);
+		switch (input)
 		{
 		case 1:
 			List_Clear(L);
@@ -44,7 +46,7 @@ int main()
 			s = List_Retrival(L, pos, &elem);
 			if (s == success)
 			{
-				printf("查找成功！");
+				printf("查找成功！\n");
 				printf("%d位置的元素是%d\n", pos, elem);
 			}
 			else
@@ -63,21 +65,16 @@ int main()
 				printf("查找失败！\n");
 			break;
 		case 5:
-			/*printf("请输入你要插入元素的位置和插入元素的值:>");
-			scanf("%d %d", &pos, &elem);*/
-		
-			for (i = 1; i <= 20; i++)
-			{
-				s = List_insert(L, i, i);
-			}
+			printf("请输入你要插入元素的位置和插入元素的值:>");
+			scanf("%d %d", &pos, &elem);
+			s = List_insert(L, i, i);
 			if (s == success)
 				printf("插入成功！\n");
 			else
 				printf("插入失败！\n");
 			break;
 		case 6:
-			len = List_Empty(L);
-			if (0 == len)
+			if (!List_Empty(L))
 			{
 				printf("线性表为空，无法删除！\n");
 				break;
@@ -85,7 +82,7 @@ int main()
 			printf("请输入你要删除哪一个位置的元素:>");
 			scanf("%d", &pos);
 			s = List_delete(L, pos);
-			if (s = success)
+			if (s == success)
 				printf("删除成功！\n");
 			else
 				printf("删除失败！\n");
@@ -94,7 +91,7 @@ int main()
 			printf("请输入你要求哪一个位置元素的前驱:>");
 			scanf("%d", &pos);
 			s = List_prior(L, pos, &elem);
-			if (s = success)
+			if (s == success)
 				printf("%d位置的前驱是%d\n", pos, elem);
 			else
 				printf("查找失败！\n");
@@ -103,7 +100,7 @@ int main()
 			printf("请输入你要求哪一个位置元素的前继:>");
 			scanf("%d", &pos);
 			s = List_Next(L, pos, &elem);
-			if (s = success)
+			if (s == success)
 				printf("%d位置的后继是%d\n", pos, elem);
 			else
 				printf("查找失败！\n");
@@ -119,7 +116,6 @@ int main()
 			printf("选择错误，请重新选择!\n");
 			break;
 		}
-	}
-	while (opt);
+	}while (input);
 	return 0;
 }
