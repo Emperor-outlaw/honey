@@ -204,3 +204,20 @@
 //		printf("不是素数！\n");
 //	return 0;
 //}
+
+////输出1~100的累加值，但要求跳过个位数是3的值
+//#include <stdio.h>
+//int main()
+//{
+//	int i = 0;
+//	int sum = 0;
+//	for (i = 1; i <= 100; i++)
+//	{
+//		if (3 == i % 10)
+//			continue;
+//		else
+//			sum += i;
+//	}
+//	printf("sum = %d\n", sum);
+//	return 0;
+//}
