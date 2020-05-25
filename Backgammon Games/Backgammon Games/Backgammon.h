@@ -3,8 +3,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <time.h>
-#define Row 4
-#define Col 4
+#define Row 3
+#define Col 2
 
 void print_board(char board[Row][Col], int row, int col);   //¥Ú”°∆Â≈Ã
 void init_board(char board[Row][Col], int row, int col);    //≥ı ºªØ∆Â≈Ã

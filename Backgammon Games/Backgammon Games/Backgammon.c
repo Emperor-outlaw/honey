@@ -50,62 +50,83 @@ int is_win(char board[Row][Col], int row, int col)
 	//判断两个对角线
 	int a = 0;
 	int b = 0;
+	int c = 0;
+	int d = 0;
 	int n1 = 0;
 	int n2 = col;
 	while (i < row)
 	{
 		if (board[i][j] == '*')
 			a++;
-	    if (board[n1][n2-1] == '#')
+	    if (board[n1][n2-1] == '*')
 			b++;
+		if (board[i][j] == '#')
+			c++;
+		if (board[n1][n2 - 1] == '#')
+			d++;
 		i++;
 		j++;
 		n1++;
 		n2--;
 	}
-	if (a == row)
+	if ((a == row) || (b == row))
 		return 1;//人赢了
-	else if (b == col)
+	else if ((c == col) || (d == col))
 		return 0;//电脑赢了
 
 	//判断行
 	for (i = 0; i < row; i++)
 	{
+		int m = 0;
+		int n = 0;
 		for (j = 0; j < col; j++)
 		{
 			if (board[i][j] == '*')
-				;
-			
+				m++;
+			else if (board[i][j] == '#')
+				n++;
 		}
-
-
+		if (m == col)
+			return 1;//人赢了
+		else if (n == row)
+			return 0;//电脑赢了
 	}
 
 	//判断列
-	i = 0;
-	for (j = 0; j < col; j++)
+	for (i = 0; i < col; i++)
 	{
-		if (board[i][j] == '*' && board[i+1][j] == '*' && board[i+2][j] == '*')
-			return '*';   //人赢
-		else if (board[i][j] == '#' && board[i+1][j] == '#' && board[i+2][j] == '#')
-			return '#';   //机器赢
+		int n1 = 0;
+		int m1 = 0;
+		for (j = 0; j < row; j++)
+		{
+			if (board[j][i] == '*')
+				n1++;
+			else if (board[j][i] == '#')
+				m1++;
+		}
+		if (n1 == col)
+			return 1;//人赢了
+		else if (m1 == row)
+			return 0;//电脑赢了
 	}
 
-	//判断是否平局
+	//判断棋盘是否被走满
 	for (i = 0; i < row; i++)
 	{
 		for (j = 0; j < col; j++)
 		{
 			if (board[i][j] == ' ')
-				break;
+			{
+				return 3;//继续
+			}
 		}
 	}
-	return '1';
+	return -1;//平局
 }
 
 
 
-void player_move(char board[Row][Col], int row, int col, char *count)
+void player_move(char board[Row][Col], int row, int col)
 {
 	int flag = 1;
 	int i = 0;
@@ -118,7 +139,6 @@ void player_move(char board[Row][Col], int row, int col, char *count)
 		if (board[i - 1][j - 1] == ' ')
 		{
 			board[i - 1][j - 1] = '*';
-			(*count)++;
 			flag = 0;
 			break;
 		}
@@ -128,7 +148,7 @@ void player_move(char board[Row][Col], int row, int col, char *count)
 }
 
 
-void computer_move(char board[Row][Col], int row, int col, char *count)
+void computer_move(char board[Row][Col], int row, int col)
 {
 	srand((unsigned int)time(NULL));
 	int flag = 1;
@@ -137,12 +157,11 @@ void computer_move(char board[Row][Col], int row, int col, char *count)
 	printf("电脑走:>\n");
 	do
 	{
-		int a = rand() % 3;
-		int b = rand() % 3;
+		int a = rand() % row;
+		int b = rand() % col;
 		if (board[a][b] == ' ')
 		{
 			board[a][b] = '#';
-			(*count)++;
 			flag = 0;
 		}
 	} while (flag);

@@ -23,12 +23,12 @@ game()
 		print_board(board, Row, Col);
 		//ÅÐ¶ÏÊäÓ®
 		ret = is_win(board, Row, Col);
-		if (ret == '*')
+		if (ret == 1)
 		{
 			printf("¹§Ï²Äã£¬ÄãÓ®ÁË£¡\n");
 			break;
 		}
-		else if (ret == 'p')
+		else if (ret == -1)
 		{
 			printf("Æ½¾Ö£¡\n");
 			break;
@@ -38,12 +38,12 @@ game()
 		print_board(board, Row, Col);
 		//ÅÐ¶ÏÊäÓ®
 		ret = is_win(board, Row, Col);
-		if (ret == '#')
+		if (ret == 0)
 		{
 			printf("µçÄÔÓ®ÁË£¡\n");
 			break;
 		}
-		else if (ret == 'p')
+		else if (ret == -1)
 		{
 			printf("Æ½¾Ö£¡\n");
 			break;
