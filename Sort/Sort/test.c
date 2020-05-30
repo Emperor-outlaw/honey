@@ -1,5 +1,5 @@
 #define _CRT_SECURE_NO_WARNINGS 1
-////插入排序
+//第一种：插入排序(1.(简单)直接插入排序 2.折半插入排序  3.希尔排序)
 #define MAX 1000   //数组的大小
 #define COUNT 1000  //放入到数组中的元素个数
 #include <stdio.h>
@@ -101,41 +101,40 @@ int main()
 	clock_t start_time, finish_time;
 	srand((unsigned int)time(NULL));
 	int arr[MAX] = { 0 };       //创建一个数组
-	int sz = sizeof(arr) / sizeof(arr[0]);
-	randomnum(arr, COUNT);    //随机获取100个数放到数组中
+	randomnum(arr, COUNT);    //随机获取COUNT个数放到数组中
 	
 
 
-	//直接插入排序
+	//1.(简单)直接插入排序
 	start_time = clock();   //排序开始执行的时间
 	Sleep(2000);
-	smp_inssort(arr, 0, sz - 1); 
+	smp_inssort(arr, 0, MAX - 1); 
 	finish_time = clock();     //排序结束的时间
 	num = (double)(finish_time - start_time);
 	printf("排序所用的时间是: %lf ms", num);
-	print(arr, sz);             //打印数组元素
+	print(arr, MAX);             //打印数组元素
 	printf("\n");
 
 
-	//折半插入排序
+	//2.折半插入排序
 	start_time = clock();   //排序开始执行的时间
 	Sleep(2000);
-    bin_inssort(arr, 0, sz - 1);
+    bin_inssort(arr, 0, MAX - 1);
 	finish_time = clock();     //排序结束的时间
 	num = (double)(finish_time - start_time);
 	printf("排序所用的时间是: %lf ms", num);
-	print(arr, sz);             //打印数组元素
+	print(arr, MAX);             //打印数组元素
 	printf("\n");
 	
 
-	//希尔排序
+	//3.希尔排序
 	start_time = clock();   //排序开始执行的时间
 	Sleep(2000);
-	shell_sort(arr, 0, sz - 1);
+	shell_sort(arr, 0, MAX - 1);
 	finish_time = clock();     //排序结束的时间
 	num = (double)(finish_time - start_time);
 	printf("排序所用的时间是: %lf ms", num);
-	print(arr, sz);             //打印数组元素
+	print(arr, MAX);             //打印数组元素
 
 
 	return 0;
@@ -144,44 +143,160 @@ int main()
 
 
 
-
-
-
-//选择排序
+////第二种：选择排序(1.简单选择排序  2.归并排序)
 //#include <stdio.h>
+//#include <stdlib.h>
+//#include <time.h>
+//#include <Windows.h>
+//#define COUNT 100  //放入数组中的元素
+//#define MAX  100   //素组的大小
 //void smp_selesort(int arr[], int n)
 //{
+//	//第一种
 //	int i = 0;
 //	int j = 0;
-//	for (i = 0; i < n; i++)
+//	int tmp = 0;
+//	for (i = 0; i < n - 1; i++)
 //	{
 //		int k = i;
-//		for (j = 1 + i; j < n; j++)
+//		for (j = i + 1; j < n; j++)
 //		{
-//			if (arr[k] > arr[j])
-//			{
+//			if (arr[j] < arr[k])   //每次发现后面元素比当前元素小只要将元素下标赋给它（避免方法二中的多次元素交换）
 //				k = j;
-//			}
 //		}
-//		if (i != k)
+//		if (k != i)            //判断是否发生了下标的赋值
 //		{
-//			int tmp = arr[k];
-//			arr[k] = arr[i];
-//			arr[i] = tmp;
+//			tmp = arr[i];
+//			arr[i] = arr[k];
+//			arr[k] = tmp;
 //		}
 //	}
+//	//第二种
+//	//int i = 0;
+//	//int j = 0;
+//	//for (i = 0; i < n - 1; i++)
+//	//{
+//	//	for (j = i + 1; j < n; j++)
+//	//	{
+//	//		if (arr[j] < arr[i])     //每次发现后面元素比当前元素小就要交换一次
+//	//		{
+//	//			int tmp = arr[i];
+//	//			arr[i] = arr[j];
+//	//			arr[j] = tmp;
+//	//		}
+//	//	}
+//	//}
 //}
-//int main()
+//
+//
+//void randomnum(int arr[], int count)
 //{
 //	int i = 0;
-//	int arr[] = { 8, 1, 4, 9, 6, 3, 5, 2, 7, 0 };
-//	int sz = sizeof(arr) / sizeof(arr[0]);
-//	smp_selesort(arr, sz);
-//	for (i = 0; i < sz; i++)
+//	for (i = 0; i < count; i++)     
 //	{
-//		printf("%d ", arr[i]);
+//		arr[i] = rand() % COUNT;
 //	}
+//}
+//
+//void print(int arr[], int sz)
+//{
+//	for (int i = 0; i < sz; i++)
+//	{
+//		if (0 == i % 20)
+//			printf("\n");
+//		printf("%-3d  ", arr[i]);
+//	}
+//}
+//
+//
+//void merge(int arr[], int parr[], int start,int mid, int end)       
+//{
+//	int Lpos = start;
+//	int Rpos = mid + 1;
+//	int tmpLpos = start;
+//	while (Lpos <= mid  && Rpos <= end)
+//	{
+//		if (arr[Lpos] > arr[Rpos])
+//			parr[tmpLpos++] = arr[Rpos++];  //第二个有序表中的元素小于第一个有序表中的元素
+//		else
+//			parr[tmpLpos++] = arr[Lpos++];  //第一个有序表中的元素小于第二个有序表中的元素，或者两个有序表中的元素相等
+//	}
+//	if (Lpos <= mid)    //第一个有序表没有全部转移到Parr[]数组中
+//	{
+//		while (Lpos <= mid)   //将第一个有序表中剩余的元素全部转移到parr[]中
+//			parr[tmpLpos++] = arr[Lpos++];
+//	}
+//	else              //第二个有序表没有全部转移到parr[]数组中
+//	{
+//		while (Rpos <= end)    //将第二个有序表中剩余的元素全部转移到parr[]中
+//			parr[tmpLpos++] = arr[Rpos++];
+//	}
+//	while (Rpos-- > start, tmpLpos--) //将parr[]中的元素转回到原来是的有序表当中
+//	{
+//		arr[Rpos] = parr[tmpLpos];
+//	}
+//}
+//
+//
+//void merge_sort(int arr[],int parr[], int start, int end)
+//{
+//	if (start < end)
+//	{
+//		int mid = (start + end) / 2;
+//		merge_sort(arr, parr, start, mid);     //数组左半边依次递归排序
+//		merge_sort(arr, parr, mid + 1, end);   //数组右半边依次递归排序
+//		merge(arr, parr, start, mid, end);     //将排好的两个数组合并
+//	}
+//
+//}
+//
+//
+//int main()
+//{
+//	double num = 0;
+//	clock_t start_time, finish_time;
+//	srand((unsigned int)time(NULL));
+//	int arr[MAX] = { 0 };       //创建一个数组
+//	randomnum(arr, COUNT);    //随机获取COUNT个数放到数组中
+//
+//	//1.简单选择排序
+//	printf("简单选择排序！\n");
+//	start_time = clock(); 
+//	Sleep(3000);
+//	smp_selesort(arr, MAX);
+//	finish_time = clock();
+//	num = (double)(finish_time - start_time);
+//	system("color 05");
+//	printf("排序所用的时间是: %lf ms", num);
+//	print(arr, MAX);             //打印数组元素
+//	printf("\n");
+//
+//
+//	//2.归并排序
+//	int *parr = calloc(MAX, sizeof(int));   //分配一个和arr[]一样大的数组，用与后面合并两个有序表操作时，将合并后的有序元素暂时存放起来.
+//	if (parr != NULL)
+//		;     //分配成功
+//	else
+//	{
+//		printf("分配数组失败!\n");
+//		return 0;
+//	}
+//	printf("归并排序！\n");
+//	start_time = clock();
+//	Sleep(3000);
+//	merge_sort(arr, parr, 0,  MAX - 1);
+//	finish_time = clock();
+//	free(parr);           //将分配的空间释放掉
+//	parr = NULL;  
+//	num = (double)(finish_time - start_time);
+//	system("color 05");
+//	printf("排序所用的时间是: %lf ms", num);
+//	print(arr, MAX);      //打印数组元素
+//	printf("\n");
+//
 //	return 0;
 //}
-//归并排序
+
+
+
 
