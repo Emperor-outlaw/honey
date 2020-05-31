@@ -1,144 +1,144 @@
 #define _CRT_SECURE_NO_WARNINGS 1
-//第一种：插入排序(1.(简单)直接插入排序 2.折半插入排序  3.希尔排序)
-#define MAX 1000   //数组的大小
-#define COUNT 1000  //放入到数组中的元素个数
-#include <stdio.h>
-#include <time.h>
-#include <stdlib.h>
-#include <Windows.h>
-void smp_inssort(int arr[], int start, int end)
-{
-	for (int i = start + 1; i <= end; i++)
-	{
-		if (arr[i - 1] > arr[i])
-		{
-			int tmp = arr[i];
-			int j = i - 1;
-			while (arr[j] > tmp && j >= start)
-			{
-				arr[j + 1] = arr[j];
-				j--;
-			}
-			arr[j + 1] = tmp;
-		}
-	}
-}
-
-
-void bin_inssort(int arr[],int start, int end)
-{
-	for (int i = start + 1; i <= end; i++)
-	{
-		if (arr[i - 1] > arr[i])
-		{
-			int tmp = arr[i];
-			int left = start;
-			int right = i - 1;
-			while (left <= right)     //折半插入运用到了折半查找
-			{
-				int mid = (left + right) / 2;
-				if (arr[mid] > tmp)
-					right = mid - 1;  //比较的值留在了左边
-				else
-					left = mid + 1;   //比较的值留在了右边（比较的值大于arr[mid]和等于arr[mid]的情况)
-			}
-			for (int j = i - 1; j >= left; j++)  //将比 比较值大的元素全部向后移动（从后往前移，减少了创建一个临时变量，从前往后移会导致元素覆盖）
-				arr[j + 1] = arr[j];
-			arr[left] = tmp;
-		}
-	}
-}
-
-
-
-
-void shell_sort(int arr[], int start, int end)
-{
-	int ret = 0;
-	int increment = end - start + 1;    //初始化分量
-	do
-	{
-		increment = increment / 3 + 1;    // 直到Increment等于1
-		for (int i = start + increment; i <= end; i += increment)  //依次向后寻找子序列中的元素（每次增加增量）
-		{
-			if (arr[i - increment] > arr[i])                 //采用直接插入排序
-			{
-				int tmp = arr[i];
-				int j = i - increment;
-				while (arr[j] > tmp && j >= start)
-				{
-					arr[j + increment] = arr[j];
-					j -= increment;
-				}
-				arr[j + increment] = tmp;
-			}
-		}
-	} while (increment > 1);
-}
-
-void randomnum(int arr[], int count)
-{
-	int i = 0;
-	for (i = 0; i < count; i++)     
-	{
-		arr[i] = rand() % COUNT;
-	}
-}
-
-void print(int arr[], int sz)
-{
-	for (int i = 0; i < sz; i++)
-	{
-		if (0 == i % 20)
-			printf("\n");
-		printf("%-3d  ", arr[i]);
-	}
-}
-
-int main()
-{
-	double num = 0;
-	clock_t start_time, finish_time;
-	srand((unsigned int)time(NULL));
-	int arr[MAX] = { 0 };       //创建一个数组
-	randomnum(arr, COUNT);    //随机获取COUNT个数放到数组中
-	
-
-
-	//1.(简单)直接插入排序
-	start_time = clock();   //排序开始执行的时间
-	Sleep(2000);
-	smp_inssort(arr, 0, MAX - 1); 
-	finish_time = clock();     //排序结束的时间
-	num = (double)(finish_time - start_time);
-	printf("排序所用的时间是: %lf ms", num);
-	print(arr, MAX);             //打印数组元素
-	printf("\n");
-
-
-	//2.折半插入排序
-	start_time = clock();   //排序开始执行的时间
-	Sleep(2000);
-    bin_inssort(arr, 0, MAX - 1);
-	finish_time = clock();     //排序结束的时间
-	num = (double)(finish_time - start_time);
-	printf("排序所用的时间是: %lf ms", num);
-	print(arr, MAX);             //打印数组元素
-	printf("\n");
-	
-
-	//3.希尔排序
-	start_time = clock();   //排序开始执行的时间
-	Sleep(2000);
-	shell_sort(arr, 0, MAX - 1);
-	finish_time = clock();     //排序结束的时间
-	num = (double)(finish_time - start_time);
-	printf("排序所用的时间是: %lf ms", num);
-	print(arr, MAX);             //打印数组元素
-
-
-	return 0;
-}
+////第一种：插入排序(1.(简单)直接插入排序 2.折半插入排序  3.希尔排序)
+//#define MAX 100   //数组的大小
+//#define COUNT 100  //放入到数组中的元素个数
+//#include <stdio.h>
+//#include <time.h>
+//#include <stdlib.h>
+//#include <Windows.h>
+//void smp_inssort(int arr[], int start, int end)
+//{
+//	for (int i = start + 1; i <= end; i++)
+//	{
+//		if (arr[i - 1] > arr[i])
+//		{
+//			int tmp = arr[i];
+//			int j = i - 1;
+//			while (arr[j] > tmp && j >= start)
+//			{
+//				arr[j + 1] = arr[j];
+//				j--;
+//			}
+//			arr[j + 1] = tmp;
+//		}
+//	}
+//}
+//
+//
+//void bin_inssort(int arr[],int start, int end)
+//{
+//	for (int i = start + 1; i <= end; i++)
+//	{
+//		if (arr[i - 1] > arr[i])
+//		{
+//			int tmp = arr[i];
+//			int left = start;
+//			int right = i - 1;
+//			while (left <= right)     //折半插入运用到了折半查找
+//			{
+//				int mid = (left + right) / 2;
+//				if (arr[mid] > tmp)
+//					right = mid - 1;  //比较的值留在了左边
+//				else
+//					left = mid + 1;   //比较的值留在了右边（比较的值大于arr[mid]和等于arr[mid]的情况)
+//			}
+//			for (int j = i - 1; j >= left; j++)  //将比 比较值大的元素全部向后移动（从后往前移，减少了创建一个临时变量，从前往后移会导致元素覆盖）
+//				arr[j + 1] = arr[j];
+//			arr[left] = tmp;
+//		}
+//	}
+//}
+//
+//
+//
+//
+//void shell_sort(int arr[], int start, int end)
+//{
+//	int ret = 0;
+//	int increment = end - start + 1;    //初始化分量
+//	do
+//	{
+//		increment = increment / 3 + 1;    // 直到Increment等于1
+//		for (int i = start + increment; i <= end; i += increment)  //依次向后寻找子序列中的元素（每次增加增量）
+//		{
+//			if (arr[i - increment] > arr[i])                 //采用直接插入排序
+//			{
+//				int tmp = arr[i];
+//				int j = i - increment;
+//				while (arr[j] > tmp && j >= start)
+//				{
+//					arr[j + increment] = arr[j];
+//					j -= increment;
+//				}
+//				arr[j + increment] = tmp;
+//			}
+//		}
+//	} while (increment > 1);
+//}
+//
+//void randomnum(int arr[], int count)
+//{
+//	int i = 0;
+//	for (i = 0; i < count; i++)     
+//	{
+//		arr[i] = rand() % COUNT;
+//	}
+//}
+//
+//void print(int arr[], int sz)
+//{
+//	for (int i = 0; i < sz; i++)
+//	{
+//		if (0 == i % 20)
+//			printf("\n");
+//		printf("%-3d  ", arr[i]);
+//	}
+//}
+//
+//int main()
+//{
+//	double num = 0;
+//	clock_t start_time, finish_time;
+//	srand((unsigned int)time(NULL));
+//	int arr[MAX] = { 0 };       //创建一个数组
+//	randomnum(arr, COUNT);    //随机获取COUNT个数放到数组中
+//	
+//
+//
+//	//1.(简单)直接插入排序
+//	start_time = clock();   //排序开始执行的时间
+//	Sleep(2000);
+//	smp_inssort(arr, 0, MAX - 1); 
+//	finish_time = clock();     //排序结束的时间
+//	num = (double)(finish_time - start_time);
+//	printf("排序所用的时间是: %lf ms", num);
+//	print(arr, MAX);             //打印数组元素
+//	printf("\n");
+//
+//
+//	//2.折半插入排序
+//	start_time = clock();   //排序开始执行的时间
+//	Sleep(2000);
+//    bin_inssort(arr, 0, MAX - 1);
+//	finish_time = clock();     //排序结束的时间
+//	num = (double)(finish_time - start_time);
+//	printf("排序所用的时间是: %lf ms", num);
+//	print(arr, MAX);             //打印数组元素
+//	printf("\n");
+//	
+//
+//	//3.希尔排序
+//	start_time = clock();   //排序开始执行的时间
+//	Sleep(2000);
+//	shell_sort(arr, 0, MAX - 1);
+//	finish_time = clock();     //排序结束的时间
+//	num = (double)(finish_time - start_time);
+//	printf("排序所用的时间是: %lf ms", num);
+//	print(arr, MAX);             //打印数组元素
+//
+//
+//	return 0;
+//}
 
 
 
@@ -297,6 +297,192 @@ int main()
 //	return 0;
 //}
 
+//第三种：交换排序(1.冒泡排序 2.快速排序)
+#include <stdio.h>
+#include <time.h>
+#include <Windows.h>
+#define MAX 100
+#define COUNT 100
 
+void randomnum(int arr[], int count)
+{
+	int i = 0;
+	for (i = 0; i < count; i++)     
+	{
+		arr[i] = rand() % COUNT;
+	}
+}
+
+void print(int arr[], int sz)
+{
+	for (int i = 0; i < sz; i++)
+	{
+		if (0 == i % 20)
+			printf("\n");
+		printf("%-3d  ", arr[i]);
+	}
+}
+
+
+void bubble_sort(int arr[], int n)
+{
+	//int flag = 1;
+	//int i = 0;
+	//int m = n;
+	//while (n-- > 1 && flag ==1 )
+	//{
+	//	for (i = 0; i < n; i++)
+	//	{
+	//		flag = 0;
+	//		if (arr[i] > arr[i + 1])
+	//		{
+	//			flag = 1;
+	//			int tmp = arr[i];
+	//			arr[i] = arr[i + 1];
+	//			arr[i + 1] = tmp;
+	//		}
+	//	}
+	//}
+
+
+	//对冒泡排序的改进
+	int k = 0;  //用于记录每次for循环最后依次交换的元素下标
+	while (n-- > 1)
+	{
+		k = 1;
+		for (int i = 0; i < n; i++)
+		{
+			if (arr[i] > arr[i + 1])
+			{
+				int tmp = arr[i];
+				arr[i] = arr[i + 1];
+				arr[i + 1] = tmp;
+				k = i + 1;
+			}
+		}
+		n = k;
+	}
+}
+
+
+
+void qk_sort(int arr[], int low, int hight)
+{
+	//枢纽是每个子序列的第一个元素
+	//int left = low;
+	//int right = hight;
+	//int tmp = arr[left];
+	//if (left >= right)
+	//	return;
+	//while (left < right)
+	//{
+	//	while (arr[right] >= tmp && left < right)
+	//		right--;
+	//	if (left < right)
+	//	{
+	//		arr[left] = arr[right];
+	//		left++;
+	//	}
+	//	while (arr[left] <= tmp && left < right)
+	//		left++;
+	//	if (left < right)
+	//	{
+	//		arr[right] = arr[left];
+	//		right--;
+	//	}
+	//}
+	//arr[left] = tmp;
+	//qk_sort(arr, low, left - 1);
+	//qk_sort(arr, left + 1, hight);
+
+
+	//对上面算法的改进（去除了元素与枢纽的频繁交换）
+	//三者取中法
+	int left = low;
+	int right = hight;
+	int mid = (left + right) / 2;
+	int tmp = 0;
+	int ret = 0;
+	if (arr[left] > arr[mid])      //将三个里面中间的元素排列在最后
+	{
+		tmp = arr[left];
+		arr[left] = arr[mid];
+		arr[mid] = tmp;
+	}
+	else if (arr[mid] > arr[right])
+	{
+		tmp = arr[mid]; 
+		arr[mid] = arr[right];
+		arr[right] = tmp;
+	}
+	tmp = arr[right--];
+	while (left < right)
+	{
+		while (arr[left] < tmp && left < right)
+			left++;
+		while (arr[right] > tmp && left < right)
+			right--;
+		if (left < right)
+		{
+			ret = arr[left];
+			arr[left] = arr[right];
+			arr[right] = ret;
+		}
+		left++;
+	}
+	arr[hight] = arr[right];
+	arr[right] = tmp;
+
+
+
+
+
+
+
+
+
+}
+
+
+
+int main()
+{
+	double num = 0;
+	clock_t start_time, finish_time;
+	srand((unsigned int)time(NULL));
+	int arr[MAX] = { 0 };       //创建一个数组
+	randomnum(arr, COUNT);    //随机获取COUNT个数放到数组中
+
+
+
+	//1.简单选择排序
+	system("color 05");
+	printf("冒泡排序结果为！\n");
+	start_time = clock();
+	Sleep(3000);
+	bubble_sort(arr, MAX);
+	finish_time = clock();
+	num = (double)(finish_time - start_time);
+	printf("排序所用的时间是: %lf ms", num);
+	print(arr, MAX);             //打印数组元素
+	printf("\n");
+
+
+
+	//快速排序
+	system("color 05");
+	printf("快速排序结果为！\n");
+	start_time = clock();
+	Sleep(3000);
+	qk_sort(arr, 0, MAX - 1);
+	finish_time = clock();
+	num = (double)(finish_time - start_time);
+	system("color 0E");
+	printf("排序所用的时间是: %lf ms", num);
+	print(arr, MAX);             //打印数组元素
+	printf("\n");
+
+	return 0;
+}
 
 
