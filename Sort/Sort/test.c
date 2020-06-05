@@ -164,7 +164,7 @@
 //			if (arr[j] < arr[k])   //每次发现后面元素比当前元素小只要将元素下标赋给它（避免方法二中的多次元素交换）
 //				k = j;
 //		}
-//		if (k != i)            //判断是否发生了下标的赋值
+//		if (k != i)                //判断是否发生了下标的赋值
 //		{
 //			tmp = arr[i];
 //			arr[i] = arr[k];
@@ -297,192 +297,290 @@
 //	return 0;
 //}
 
-//第三种：交换排序(1.冒泡排序 2.快速排序)
+////第三种：交换排序(1.冒泡排序 2.快速排序)
+//#include <stdio.h>
+//#include <time.h>
+//#include <Windows.h>
+//#define MAX 100
+//#define COUNT MAX
+//
+//void randomnum(int arr[], int count)
+//{
+//	int i = 0;
+//	for (i = 0; i < count; i++)     
+//	{
+//		arr[i] = rand() % COUNT;
+//	}
+//}
+//
+//void print(int arr[], int sz)
+//{
+//for (int i = 0; i < sz; i++)
+//{
+//	if (0 == i % 20)
+//		printf("\n");
+//	printf("%-3d  ", arr[i]);
+//}
+//}
+//
+//
+//void bubble_sort(int arr[], int n)
+//{
+//	//int flag = 1;
+//	//int i = 0;
+//	//int m = n;
+//	//while (n-- > 1 && flag ==1 )
+//	//{
+//	//	for (i = 0; i < n; i++)
+//	//	{
+//	//		flag = 0;
+//	//		if (arr[i] > arr[i + 1])
+//	//		{
+//	//			flag = 1;
+//	//			int tmp = arr[i];
+//	//			arr[i] = arr[i + 1];
+//	//			arr[i + 1] = tmp;
+//	//		}
+//	//	}
+//	//}
+//
+//
+//	//对冒泡排序的改进
+//	int k = 0;  //用于记录每次for循环最后依次交换的元素下标
+//	while (n-- > 1)
+//	{
+//		k = 1;
+//		for (int i = 0; i < n; i++)
+//		{
+//			if (arr[i] > arr[i + 1])
+//			{
+//				int tmp = arr[i];
+//				arr[i] = arr[i + 1];
+//				arr[i + 1] = tmp;
+//				k = i + 1;
+//			}
+//		}
+//		n = k;
+//	}
+//}
+//
+//
+//
+//void qk_sort(int arr[], int low, int high)
+//{
+//	//枢纽是每个子序列的第一个元素
+//	/*int left = low;
+//	int right = high;
+//	int tmp = arr[left];
+//	if (left >= right)
+//		return;
+//	while (left < right)
+//	{
+//		while (arr[right] >= tmp && left < right)
+//			right--;
+//		if (left < right)
+//		{
+//			arr[left] = arr[right];
+//			left++;
+//		}
+//		while (arr[left] <= tmp && left < right)
+//			left++;
+//		if (left < right)
+//		{
+//			arr[right] = arr[left];
+//			right--;
+//		}
+//	}
+//	arr[left] = tmp;
+//	qk_sort(arr, low, left - 1);
+//	qk_sort(arr, left + 1, high);*/
+//
+//
+//	//对上面的改进（去除了元素与枢纽的频繁交换）
+//	int left = low;
+//	int right = high;
+//	int tmp = arr[left];
+//	if (left >= right)
+//		return;
+//	while (left < right)
+//	{
+//		while (arr[right] >= tmp && left < right)
+//			right--;
+//		while (arr[left] <= tmp && left < right)
+//			left++;
+//		if (left < right)
+//		{
+//			int ret = arr[right];
+//			arr[right] = arr[left];
+//			arr[left] = ret;
+//		}
+//	}
+//	//枢纽归位
+//	arr[low] = arr[left];
+//	arr[left] = tmp;
+//
+//	qk_sort(arr, low, left - 1);
+//	qk_sort(arr, left + 1, high);
+//
+//
+//	////对上面算法的改进（去除了元素与枢纽的频繁交换并且枢纽采用三者取中法）
+//	////三者取中法
+//	//int left = low;
+//	//int right = high;
+//	//int mid = (left + right) / 2;
+//	//int tmp = 0;
+//	//if (high - low == 1)
+//	//{
+//	//	if (arr[high] < arr[low])
+//	//	{
+//	//		tmp = arr[high];
+//	//		arr[high] = arr[low];
+//	//		arr[low] = tmp;
+//	//	}
+//	//	return;
+//	//}
+//	//else if (high == low)
+//	//	return;
+//	////将表中最左、最右、最中三个元素中，中间的元素放在最右边
+//	//if ((arr[left] - arr[mid]) > 0 && (arr[right] - arr[mid]) > 0)
+//	//{
+//	//	if (arr[left] < arr[right])
+//	//	{
+//	//		tmp = arr[left];
+//	//		arr[left] = arr[right];
+//	//		arr[right] = tmp;
+//	//	}
+//	//}
+//	//else if ((arr[left] - arr[mid]) < 0 && (arr[right] - arr[mid]) < 0)
+//	//{
+//	//	if (arr[left] > arr[right])
+//	//	{
+//	//		tmp = arr[left];
+//	//		arr[left] = arr[right];
+//	//		arr[right] = tmp;
+//	//	}
+//	//}
+//	//else
+//	//{
+//	//	tmp = arr[mid];
+//	//	arr[mid] = arr[right];
+//	//	arr[right] = tmp;
+//	//}
+//	//while (left < right)
+//	//{
+//	//	while (arr[left] <= tmp && left < right)
+//	//	{
+//	//		left++;
+//	//  	}
+//	//	while (arr[right] >= tmp && left < right)
+//	//	{
+//	//		right--;
+//	//	}
+//	//	if (left < right)
+//	//	{
+//	//		int ret = arr[left];
+//	//		arr[left] = arr[right];
+//	//		arr[right] = ret;
+//	//	}
+//	//}
+//	////枢纽归位
+//	//arr[high] = arr[right];
+//	//arr[right] = tmp;
+//
+//	//qk_sort(arr, low, right - 1);   //递归排序排列枢纽的左边序列
+//	//qk_sort(arr, right + 1, high);  //递归排序排列枢纽的右边序列
+//
+//}
+//
+//
+//
+//int main()
+//{
+//	double num = 0;
+//	clock_t start_time, finish_time;
+//	srand((unsigned int)time(NULL));
+//	int arr[MAX] = { 0 };       //创建一个数组
+//	randomnum(arr, COUNT);    //随机获取COUNT个数放到数组中
+//
+//
+//
+//	////1.简单选择排序
+//	//system("color 05");
+//	//printf("冒泡排序结果为！\n");
+//	//start_time = clock();
+//	//Sleep(2000);
+//	//bubble_sort(arr, MAX);
+//	//finish_time = clock();
+//	//num = (double)(finish_time - start_time);
+//	//printf("排序所用的时间是: %lf ms", num);
+//	//print(arr, MAX);             //打印数组元素
+//	//printf("\n");
+//
+//
+//
+//	//快速排序
+//	system("color 05");
+//	printf("快速排序结果为！\n");
+//	start_time = clock();
+//	Sleep(2000);
+//	qk_sort(arr, 0, MAX - 1);
+//	finish_time = clock();
+//	num = (double)(finish_time - start_time);
+//	system("color 0E");
+//	printf("排序所用的时间是: %lf ms", num);
+//	print(arr, MAX);             //打印数组元素
+//	printf("\n");
+//
+//	return 0;
+//}
+
+
 #include <stdio.h>
-#include <time.h>
-#include <Windows.h>
-#define MAX 100
-#define COUNT 100
-
-void randomnum(int arr[], int count)
-{
-	int i = 0;
-	for (i = 0; i < count; i++)     
-	{
-		arr[i] = rand() % COUNT;
-	}
-}
-
-void print(int arr[], int sz)
-{
-	for (int i = 0; i < sz; i++)
-	{
-		if (0 == i % 20)
-			printf("\n");
-		printf("%-3d  ", arr[i]);
-	}
-}
-
-
-void bubble_sort(int arr[], int n)
-{
-	//int flag = 1;
-	//int i = 0;
-	//int m = n;
-	//while (n-- > 1 && flag ==1 )
-	//{
-	//	for (i = 0; i < n; i++)
-	//	{
-	//		flag = 0;
-	//		if (arr[i] > arr[i + 1])
-	//		{
-	//			flag = 1;
-	//			int tmp = arr[i];
-	//			arr[i] = arr[i + 1];
-	//			arr[i + 1] = tmp;
-	//		}
-	//	}
-	//}
-
-
-	//对冒泡排序的改进
-	int k = 0;  //用于记录每次for循环最后依次交换的元素下标
-	while (n-- > 1)
-	{
-		k = 1;
-		for (int i = 0; i < n; i++)
-		{
-			if (arr[i] > arr[i + 1])
-			{
-				int tmp = arr[i];
-				arr[i] = arr[i + 1];
-				arr[i + 1] = tmp;
-				k = i + 1;
-			}
-		}
-		n = k;
-	}
-}
-
-
-
-void qk_sort(int arr[], int low, int hight)
-{
-	//枢纽是每个子序列的第一个元素
-	//int left = low;
-	//int right = hight;
-	//int tmp = arr[left];
-	//if (left >= right)
-	//	return;
-	//while (left < right)
-	//{
-	//	while (arr[right] >= tmp && left < right)
-	//		right--;
-	//	if (left < right)
-	//	{
-	//		arr[left] = arr[right];
-	//		left++;
-	//	}
-	//	while (arr[left] <= tmp && left < right)
-	//		left++;
-	//	if (left < right)
-	//	{
-	//		arr[right] = arr[left];
-	//		right--;
-	//	}
-	//}
-	//arr[left] = tmp;
-	//qk_sort(arr, low, left - 1);
-	//qk_sort(arr, left + 1, hight);
-
-
-	//对上面算法的改进（去除了元素与枢纽的频繁交换）
-	//三者取中法
-	int left = low;
-	int right = hight;
-	int mid = (left + right) / 2;
-	int tmp = 0;
-	int ret = 0;
-	if (arr[left] > arr[mid])      //将三个里面中间的元素排列在最后
-	{
-		tmp = arr[left];
-		arr[left] = arr[mid];
-		arr[mid] = tmp;
-	}
-	else if (arr[mid] > arr[right])
-	{
-		tmp = arr[mid]; 
-		arr[mid] = arr[right];
-		arr[right] = tmp;
-	}
-	tmp = arr[right--];
-	while (left < right)
-	{
-		while (arr[left] < tmp && left < right)
-			left++;
-		while (arr[right] > tmp && left < right)
-			right--;
-		if (left < right)
-		{
-			ret = arr[left];
-			arr[left] = arr[right];
-			arr[right] = ret;
-		}
-		left++;
-	}
-	arr[hight] = arr[right];
-	arr[right] = tmp;
-
-
-
-
-
-
-
-
-
-}
-
-
-
+void HeapAdjust(int r[], int i, int j);
+void HeapSort(int r[], int n);
 int main()
 {
-	double num = 0;
-	clock_t start_time, finish_time;
-	srand((unsigned int)time(NULL));
-	int arr[MAX] = { 0 };       //创建一个数组
-	randomnum(arr, COUNT);    //随机获取COUNT个数放到数组中
-
-
-
-	//1.简单选择排序
-	system("color 05");
-	printf("冒泡排序结果为！\n");
-	start_time = clock();
-	Sleep(3000);
-	bubble_sort(arr, MAX);
-	finish_time = clock();
-	num = (double)(finish_time - start_time);
-	printf("排序所用的时间是: %lf ms", num);
-	print(arr, MAX);             //打印数组元素
-	printf("\n");
-
-
-
-	//快速排序
-	system("color 05");
-	printf("快速排序结果为！\n");
-	start_time = clock();
-	Sleep(3000);
-	qk_sort(arr, 0, MAX - 1);
-	finish_time = clock();
-	num = (double)(finish_time - start_time);
-	system("color 0E");
-	printf("排序所用的时间是: %lf ms", num);
-	print(arr, MAX);             //打印数组元素
-	printf("\n");
-
+	int r[] = { 53, 34, 76, 23, 55, 28, 63, 88, 34, 66 };
+	HeapSort(r, 10);
+	int i;
+	for (i = 0; i<10; i++)
+	{
+		printf("%d ", r[i]);
+	}
 	return 0;
 }
+
+void HeapAdjust(int r[], int i, int j) //调整堆
+{
+	int child = 2 * i;
+	int temp = r[i];    //temp临时存放根结点
+	while (child <= j) //沿大儿子向下调整
+	{
+		if (child<j && r[child + 1]>r[child]) child++;
+		if (temp >= r[child]) break;
+		r[child / 2] = r[child];
+		child = 2 * child;
+	}
+	r[child / 2] = temp;
+}
+
+void HeapSort(int r[], int n)   //建堆
+{
+	int i;
+	for (i = (n - 1) / 2; i >= 0; --i)
+	{
+		HeapAdjust(r, i, n - 1);  //初始建堆
+	}
+	for (i = n - 1; i>0; --i)
+	{
+		//将当前堆顶元素与当前堆尾元素互换
+		int temp = r[0];
+		r[0] = r[i];
+		r[i] = temp;
+		HeapAdjust(r, 0, i - 1); //将剩下的元素重新调整成堆
+	}
+}
+
+
 
 
