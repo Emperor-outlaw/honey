@@ -5,6 +5,7 @@
 //#include <stdio.h>
 //#include <time.h>
 //#include <stdlib.h>
+//#include <string.h>
 //#include <Windows.h>
 //void smp_inssort(int arr[], int start, int end)
 //{
@@ -42,7 +43,7 @@
 //				else
 //					left = mid + 1;   //比较的值留在了右边（比较的值大于arr[mid]和等于arr[mid]的情况)
 //			}
-//			for (int j = i - 1; j >= left; j++)  //将比 比较值大的元素全部向后移动（从后往前移，减少了创建一个临时变量，从前往后移会导致元素覆盖）
+//			for (int j = i - 1; j >= left; j--)  //将比 比较值大的元素全部向后移动（从后往前移，减少了创建一个临时变量，从前往后移会导致元素覆盖）
 //				arr[j + 1] = arr[j];
 //			arr[left] = tmp;
 //		}
@@ -100,41 +101,49 @@
 //	double num = 0;
 //	clock_t start_time, finish_time;
 //	srand((unsigned int)time(NULL));
-//	int arr[MAX] = { 0 };       //创建一个数组
-//	randomnum(arr, COUNT);    //随机获取COUNT个数放到数组中
+//	int arr1[MAX] = { 0 };          //创建一个数组(用于直接插入排序的数组)
+//	int arr2[MAX] = { 0 };          //用于折半插入排序的数组
+//	int arr3[MAX] = { 0 };          //用于希尔插入排序的数组
+//	randomnum(arr1, COUNT);         //随机获取COUNT个数放到数组arr1中
+//	//保证三个数组元素一样
+//	memcpy(arr2, arr1, MAX * sizeof(arr1[0]));
+//	memcpy(arr3, arr1, MAX * sizeof(arr1[0]));
 //	
 //
 //
 //	//1.(简单)直接插入排序
-//	start_time = clock();   //排序开始执行的时间
+//	printf("简单插入排序结果是:");
+//	start_time = clock();         //排序开始执行的时间
 //	Sleep(2000);
-//	smp_inssort(arr, 0, MAX - 1); 
-//	finish_time = clock();     //排序结束的时间
+//	smp_inssort(arr1, 0, MAX - 1); 
+//	finish_time = clock();        //排序结束的时间
 //	num = (double)(finish_time - start_time);
-//	printf("排序所用的时间是: %lf ms", num);
-//	print(arr, MAX);             //打印数组元素
+//	//printf("排序所用的时间是: %lf ms", num);
+//	print(arr1, MAX);              //打印数组元素
 //	printf("\n");
 //
 //
 //	//2.折半插入排序
-//	start_time = clock();   //排序开始执行的时间
+//	printf("折半插入排序结果是:");
+//	start_time = clock();         //排序开始执行的时间
 //	Sleep(2000);
-//    bin_inssort(arr, 0, MAX - 1);
-//	finish_time = clock();     //排序结束的时间
+//    bin_inssort(arr2, 0, MAX - 1);
+//	finish_time = clock();        //排序结束的时间
 //	num = (double)(finish_time - start_time);
-//	printf("排序所用的时间是: %lf ms", num);
-//	print(arr, MAX);             //打印数组元素
+//	//printf("排序所用的时间是: %lf ms", num);
+//	print(arr2, MAX);              //打印数组元素
 //	printf("\n");
 //	
 //
 //	//3.希尔排序
+//	printf("希尔排序结果是:");
 //	start_time = clock();   //排序开始执行的时间
 //	Sleep(2000);
-//	shell_sort(arr, 0, MAX - 1);
+//	shell_sort(arr3, 0, MAX - 1);
 //	finish_time = clock();     //排序结束的时间
 //	num = (double)(finish_time - start_time);
-//	printf("排序所用的时间是: %lf ms", num);
-//	print(arr, MAX);             //打印数组元素
+//	//printf("排序所用的时间是: %lf ms", num);
+//	print(arr3, MAX);             //打印数组元素
 //
 //
 //	return 0;
@@ -534,53 +543,85 @@
 //	return 0;
 //}
 
+//堆排序
+//堆是一种树形结构。在维基百科上的定义是这样的“给定堆中任意节点 P 和 C，若 P 是 C 的母节点，那么 P 的值会小于等于（或大于等于） C 的值”。
 
-#include <stdio.h>
-void HeapAdjust(int r[], int i, int j);
-void HeapSort(int r[], int n);
-int main()
-{
-	int r[] = { 53, 34, 76, 23, 55, 28, 63, 88, 34, 66 };
-	HeapSort(r, 10);
-	int i;
-	for (i = 0; i<10; i++)
-	{
-		printf("%d ", r[i]);
-	}
-	return 0;
-}
+//这句话通俗一点就是，树的根节点需要大于（小于）它的孩子节点，而每个左右子树都满足这个条件。当树的根节点大于它的左右孩子节点时称为大顶推，否则称为小顶堆。
 
-void HeapAdjust(int r[], int i, int j) //调整堆
-{
-	int child = 2 * i;
-	int temp = r[i];    //temp临时存放根结点
-	while (child <= j) //沿大儿子向下调整
-	{
-		if (child<j && r[child + 1]>r[child]) child++;
-		if (temp >= r[child]) break;
-		r[child / 2] = r[child];
-		child = 2 * child;
-	}
-	r[child / 2] = temp;
-}
+//排序算法的思路是这样的，首先将序列中的元素组织成一个大顶堆，将树的根节点放到序列的最后面，然后将剩余的元素再组织成一个大顶堆，然后放到倒数第二个位置，以此类推。
 
-void HeapSort(int r[], int n)   //建堆
-{
-	int i;
-	for (i = (n - 1) / 2; i >= 0; --i)
-	{
-		HeapAdjust(r, i, n - 1);  //初始建堆
-	}
-	for (i = n - 1; i>0; --i)
-	{
-		//将当前堆顶元素与当前堆尾元素互换
-		int temp = r[0];
-		r[0] = r[i];
-		r[i] = temp;
-		HeapAdjust(r, 0, i - 1); //将剩下的元素重新调整成堆
-	}
-}
-
-
-
-
+//#include <stdio.h>
+//#include <time.h>
+//#include <stdlib.h>
+//#define MAX 100
+//#define COUNT MAX
+//
+//void randomnum(int arr[], int count)
+//{
+//	int i = 0;
+//	for (i = 0; i < count; i++)     
+//	{
+//		arr[i] = rand() % COUNT;
+//	}
+//}
+//
+//void print(int arr[], int sz)
+//{
+//	for (int i = 0; i < sz; i++)
+//	{
+//		if (0 == i % 20)
+//			printf("\n");
+//		printf("%-3d  ", arr[i]);
+//	}
+//}
+//
+//void heap_adjust(int arr[], int i, int sz)
+//{
+//	int child = 2 * i + 1;  //非叶子节点的左孩子
+//	int tmp = arr[i];   //临时存放根节点
+//	while (child < sz)
+//	{
+//		if (child < sz - 1 && arr[child] < arr[child + 1])
+//			child++;
+//		if (tmp < arr[child])
+//			arr[(child - 1) / 2 ] = arr[child];
+//		else
+//			break;
+//		child = child * 2 + 1;
+//	}
+//	arr[(child - 1) / 2] = tmp;
+//}
+//
+//void heap_sort(int arr[], int sz)
+//{
+//	//初始建堆
+//	int i = 0;
+//	for (i = sz/2 - 1; i >= 0; i--)
+//	{
+//		heap_adjust(arr, i, sz);
+//	}
+//
+//	for (i = sz - 1; i > 0; i--)
+//	{
+//		//将堆顶元素和堆尾元素交换
+//		int tmp = arr[0];
+//		arr[0] = arr[i];
+//		arr[i] = tmp;
+//
+//		//继续对堆进行调整
+//		heap_adjust(arr, 0, i);
+//	}
+//}
+//
+//int main()
+//{
+//	srand((unsigned int)time(NULL));
+//	int arr[MAX] = { 0 };       //创建一个数组
+//	randomnum(arr, COUNT);    //随机获取COUNT个数放到数组中
+//
+//	heap_sort(arr, MAX);
+//
+//	print(arr, MAX);             //打印数组元素
+//
+//	return 0;
+//}
