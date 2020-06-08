@@ -1,6 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS 1
-////约瑟夫环问题(1.链表 2.数组 3.递归)
-////1.单项循环链表解决
+//////约瑟夫环问题(1.链表 2.数组 3.递归)
+//////1.单项循环链表解决
 //#include <stdio.h>
 //#include <stdlib.h>
 //#include <assert.h>
@@ -9,7 +9,7 @@
 //{
 //	int Date;
 //	struct Node *next;
-//}JoseNode, *PNode, *HNode;
+//}JoseNode, *HNode;
 //
 //void Jose_init(HNode h)
 //{
@@ -62,7 +62,7 @@
 //			p = p->next;
 //		}
 //		q = p->next;
-//		printf("出局的人为: %d\n", q->Date);
+//		printf("出局的人为：%d 号\n", q->Date);
 //		p->next = q->next;
 //		free(q);
 //		p = p->next;
@@ -90,7 +90,7 @@
 //	Jose_insert(h, N);
 //
 //	//遍历循环列表
-//	Traverse_list(h, N);
+//	//Traverse_list(h, N);
 //
 //	//出局函数
 //	Jose_delete(h, N, M);
@@ -106,7 +106,7 @@
 ////数组的第一种方法：
 ////准备工作
 ////N 代表参与的人数 ,M 代表出局的密码
-////先创建一个N元素大小的数组(每个元素模拟一个人)，里面全部初始化为0(直接用calloc函数分配空间并且也自动初始化为0)；
+////先创建一个N元素大小的数组(每个元素模拟一个人)，里面全部初始化为0(直接用calloc函数分配空间并且也自动初始化为0)，代表这个人没有被淘汰，如果数到某一个人要被淘汰，那么将该元素置为1，代表被淘汰；
 ////从第一个人开始数，数到M时这个人被淘汰（将该元素赋值为1，代表被淘汰），然后从被淘汰的下一个人重新开始数，数到M时这个人被淘汰，循环这个动作，直到所有人全部被淘汰（也就是数组里的元素全部被置为1）
 ////如何确定哪个人被淘汰（也就是哪个元素要被置为1），此时可以利用到数组下标，但是有一个问题，我们数组是从下标为0开始存放元素的，因此我们要淘汰的人的编号 = 数组的下标 + 1；
 ////现在设定一个计数器int number = 0（初始化为0，为什么设置为0，等会看程序的时候就会明白）。
@@ -198,7 +198,7 @@
 //	//只要alive > 0就继续淘汰下一个人
 //	while (alive > 0)
 //	{
-//		number += 1;   
+//		number++;   
 //		if (number == doom)
 //		{
 //			//如果if语句进来说明这个人要被淘汰
@@ -211,6 +211,77 @@
 //		{
 //			prepoint = curpoint;
 //		}
+//		curpoint = circle[curpoint];
+//
+//		////上面的if判段也可以换成while循环，直接向后连续访问，直接找到要淘汰的人
+//		//number = doom - 1;
+//		//while (number-- > 0)
+//		//{
+//		//	prepoint = curpoint;
+//		//	curpoint = circle[curpoint];
+//		//}
+//		//circle[prepoint] = circle[curpoint];  //删除操作
+//		//1 == alive ? printf("%d ", curpoint + 1) : printf("%d ", curpoint + 1);
+//		//alive--;
+//		//curpoint = circle[curpoint];
+//	}
+//	//将分配的空间释放掉
+//	free(circle);
+//	circle = NULL;
+//}
+//int main()
+//{
+//	int N = 0;   //参与的人数
+//	int M = 0;   //出局的密码
+//	printf("请输入参与人数:");
+//	scanf("%d", &N);
+//	printf("请输入出局密码:");
+//	scanf("%d", &M);
+//
+//	Joseph(N, M);
+//
+//	return 0;
+//}
+
+
+
+////数组的第三种方法
+////对第二种方法进行了优化，去除了计数器，并且去除了每一次的判断，每次直接定位到要淘汰的人
+//#include <stdio.h>
+//#include <assert.h>
+//#include <stdlib.h>
+//
+//void Joseph(int count, int doom)
+//{
+//	int alive = count;       //存活的人数
+//	int index = 0;           //数组的下标
+//	int curpoint = 0;        //指向当前元素的指针
+//	int prepoint = 0;        //指向circle[curpoint]的前驱
+//	int *circle = NULL;      //数组指针（指向分配的空间）
+//	circle = (int *)calloc(count, sizeof(int));  //创建一个n元素大小的空间数组
+//	assert(circle);          //检查分配是否成功
+//
+//	//初始化数组
+//	for (index = 0; index < count; index++)
+//	{
+//		circle[index] = (index + 1) % count;
+//	}
+//
+//	//只要alive > 0就继续淘汰下一个人
+//	while (alive > 0)
+//	{
+//		//直接计算出要移动的次数（其实循环控制条件在剩余最后doom个元素时做了优化）
+//		int num = doom % alive - 1;
+//		for (int i = 0; i < (num == -1 ? alive - 1 : num); i++)
+//		{
+//			prepoint = curpoint;
+//			curpoint = circle[curpoint];
+//		}
+//
+//
+//		circle[prepoint] = circle[curpoint];  //删除操作
+//		1 == alive ? printf("%d ", curpoint + 1) : printf("%d ", curpoint + 1);
+//		alive--;
 //		curpoint = circle[curpoint];
 //	}
 //	//将分配的空间释放掉
@@ -233,56 +304,30 @@
 
 
 
-//数组的第三种方法
-//对第二种方法进行了优化，去除了计数器，并且去除了每一次的判断，每次直接定位到要淘汰的人
-#include <stdio.h>
-#include <assert.h>
-#include <stdlib.h>
 
-void Joseph(int count, int doom)
-{
-	int alive = count;       //存活的人数
-	int index = 0;           //数组的下标
-	int curpoint = 0;        //指向当前元素的指针
-	int prepoint = 0;        //指向circle[curpoint]的前驱
-	int *circle = NULL;      //数组指针（指向分配的空间）
-	circle = (int *)calloc(count, sizeof(int));  //创建一个n元素大小的空间数组
-	assert(circle);          //检查分配是否成功
-
-	//初始化数组
-	for (index = 0; index < count; index++)
-	{
-		circle[index] = (index + 1) % count;
-	}
-
-	//只要alive > 0就继续淘汰下一个人
-	while (alive > 0)
-	{
-		int n = doom - 1;
-		while (n-- > 0)
-		{
-			prepoint = curpoint;
-			curpoint = circle[curpoint];
-		}
-		circle[prepoint] = circle[curpoint];  //删除操作
-		1 == alive ? printf("%d ", curpoint + 1) : printf("%d ", curpoint + 1);
-		alive--;
-		curpoint = circle[curpoint];
-	}
-	//将分配的空间释放掉
-	free(circle);
-	circle = NULL;
-}
-int main()
-{
-	int N = 0;   //参与的人数
-	int M = 0;   //出局的密码
-	printf("请输入参与人数:");
-	scanf("%d", &N);
-	printf("请输入出局密码:");
-	scanf("%d", &M);
-
-	Joseph(N, M);
-
-	return 0;
-}
+////用公式法(求N个人参与时，最终获胜者的编号)
+////其实无论用单项循环链表、队列，循环数组等等，时间复杂度高达O(nm)，有的甚至达到O(n^2),如果参加的人数和出局密码足够大，更加困难算出
+////此时就可以利用数学来对问题分析简化
+////f[1] = 0
+////f[N, M] = (f[N - 1, M] + M) % N
+//#include <stdio.h>
+//int Jose_recursion(int count, int doom)
+//{
+//	if (0 == count)
+//		return 0;
+//	else
+//		return (Jose_recursion(count - 1, doom) + doom) % count;
+//}
+//
+//int main()
+//{
+//	int N = 0;
+//	int M = 0;
+//	printf("请输入参加的人数:");
+//	scanf("%d", &N);
+//	printf("请输入出局的密码:");
+//	scanf("%d", &M);
+//	int ret = Jose_recursion(N, M);
+//	printf("最终获胜的人为:%d 号\n", ret + 1);
+//	return 0;
+//}
