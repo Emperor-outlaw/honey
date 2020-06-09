@@ -14,7 +14,6 @@ typedef struct Stack
 	clock_t time_finish[MAX]; //汽车离场的时间
 	int top;                  //栈指针
 }Sqstack;
-
 //候车场结构体（队列）
 typedef struct Queue
 {
@@ -24,10 +23,11 @@ typedef struct Queue
 	int rear;                //队尾指针
 }Sqqueue;
 
-
-//初始换候车场
+//------------以下是候车场相关的函数-------------------
+//初始化候车场
 void Sqqueue_init(Sqqueue **p)
 {
+	//动态分配一个候车场空间
 	(*p) = (Sqqueue *)malloc(sizeof(Sqqueue));
 	assert(*p);
 	(*p)->front = 0;
@@ -59,27 +59,25 @@ void play_Sqqueue(Sqqueue *p)
 
 
 
-
+//----------------以下是停车场相关的函数------------------
 //初始化停车场
 void Sqstack_init(Sqstack **pp)
 {
+	//动态分配一个停车场空间
 	(*pp) = (Sqstack *)malloc(sizeof(Sqstack));
 	assert(*pp);
 	(*pp)->top = -1;
 }
-
 //判断停车场是否停满
 int stack_full(Sqstack *ptr1)
 {
 	return (ptr1->top == MAX - 1);
 }
-
 //判断停车场是否空
 int Sqstack_empty(Sqstack *ptr1)
 {
 	return (-1 == ptr1->top);
 }
-
 //显示停车场信息
 void play_Sqstack(Sqstack *ptr1)
 {
@@ -94,21 +92,25 @@ void play_Sqstack(Sqstack *ptr1)
 	}
 }
 
+
+
+
 //停车函数
 void pull_up(Sqstack *ptr1, Sqqueue *p)
 {
+	time_t com_time;  //用于去显示进来的时间
 	int license_number = 0;//存放车牌号
 	if (!stack_full(ptr1))
 	{
 		//if进来，代表停车场没有满
 		printf("请输入你的车牌号：");
 		scanf("%d", &license_number);
-
 		//将车放到停车场里面
 		ptr1->top++;
-		printf("车牌号%d的车，停放在停车场%d号位置!\n", license_number, ptr1->top + 1); 
 		ptr1->NUM[ptr1->top] = license_number;  //将车号放入
 		ptr1->time_start[ptr1->top] = clock();  //将停车这一刻的时间也放入
+		time(&com_time);  //获取当前时间
+		printf(">>现在时间是:%s>>车牌号%d的车，停放在停车场%d号位置!\n",ctime(&com_time), license_number, ptr1->top + 1);
 	}
 	else
 	{
@@ -121,8 +123,9 @@ void pull_up(Sqstack *ptr1, Sqqueue *p)
 			scanf("%d", &license_number);
 
 			//将车停在候车场
-			printf("车牌号%d的车，停放在候车场%d号位置！\n", license_number, p->rear + 1);
 			p->NUM[p->rear] = license_number;  //将车号放入
+			time(&com_time);  //获取当前时间
+			printf(">>现在时间是:%s>>车牌号%d的车，停放在候车场%d号位置！\n", ctime(&com_time), license_number, p->rear + 1);
 			p->rear = (p->rear + 1) % (N + 1); //尾指针向后移动
 
 		}
@@ -139,6 +142,8 @@ void pull_up(Sqstack *ptr1, Sqqueue *p)
 //离开函数（将车开离停车场）
 void drive_away(Sqstack *ptr1, Sqstack *ptr2, Sqqueue *p)
 {
+	double ret = 0;
+	time_t lev_time;  //用于去显示离开的时间
 	int license_number = 0;//存放车牌号
 	if (!Sqstack_empty(ptr1))
 	{
@@ -163,7 +168,11 @@ void drive_away(Sqstack *ptr1, Sqstack *ptr2, Sqqueue *p)
 				ptr1->top--;
 			}
 			//该车离开，显示出来
-			printf("车牌号为%d，停放在停车场%d号位置的车离开！\n", ptr1->NUM[ptr1->top], ptr1->top + 1);
+			time(&lev_time);
+			ptr1->time_finish[ptr1->top] = clock();  //将离去这一刻的时间存放进去
+			ret = (double)(ptr1->time_finish[ptr1->top] - ptr1->time_start[ptr1->top]); //汽车总共停放的时间（单位是ms）
+			printf(">>现在时间是:%s>>你总共停留了%lfs,总消费%lf$\n", ctime(&lev_time), ret / CLK_TCK, (ret / CLK_TCK) * 1);//除以CLK_TCK（CLOCKS_PER_SEC ），将其转化为秒
+			printf(">>车牌号为%d，停放在停车场%d号位置的车离开！\n", ptr1->NUM[ptr1->top], ptr1->top + 1);
 			ptr1->top--;
 			//将刚才移动到便道的车全部移动回来（最后移动进去的先移动出来，栈的机制）
 			while (tmp-- > 0)
@@ -175,10 +184,12 @@ void drive_away(Sqstack *ptr1, Sqstack *ptr2, Sqqueue *p)
 			{
 				//if进来，代表候车场里面有车，如果没有进来，代表停车场还没有把车停满
 				//这时将候车场里最先进来的车移动到停车场里
-				//这里只需要移动一次，为什么：因为，只有停车场内停满了车，候车场内才会有车，而此时停满的停车场往外开走一辆车(因为这个离开函数每次只执行一次，因为你每次只选一次2这个选项)，就空出一个位置，所以候车场内只能有一个车开进来
+				//这里只需要移动一次，为什么?因为，只有停车场内停满了车，候车场内才会有车，而此时停满的停车场往外开走一辆车(因为这个离开函数每次只执行一次，因为你每次只选一次2这个选项)，就空出一个位置，所以候车场内只能有一个车开进来
 				ptr1->top++;
 				ptr1->NUM[ptr1->top] = p->NUM[p->front];
 				p->front = (p->front + 1) % (N + 1);
+				//车进到停车场，开始计费
+				ptr1->time_start[ptr1->top] = clock();
 			}
 		}
 		else
@@ -201,7 +212,7 @@ void menu()
 {
 	printf("****************************************\n");
 	printf("****        欢迎来到王氏停车场     *****\n");
-	printf("****   本停车场的收费标准是：2$/h  *****\n");
+	printf("****   本停车场的收费标准是：1$/s  *****\n");
 	printf("****************************************\n");
 	printf("***       1.停车       2.离场       ****\n");
 	printf("***       3.显示停车场信息          ****\n");
@@ -213,17 +224,16 @@ void menu()
 int main()
 {
 	int input = 0;
-	double ret = 0;        //用于存放计算时间的结果
-	Sqstack *ptr1 = NULL;  //指向停车场的指针
-	Sqstack *ptr2 = NULL;  //指向便道的指针（便道：如果有车要离开，比这个车后来的车要全部要开出停车场，开到另一个地方让路，那个地方就称作便道（一般空间和停车场一样大））
-	Sqqueue *p = NULL;     //指向侯车场的指针
+	Sqstack *ptr1 = NULL;  //创建指向停车场的指针
+	Sqstack *ptr2 = NULL;  //创建指向便道的指针（便道：如果有车要离开，比这个车后来的车要全部要开出停车场，开到另一个地方让路，那个地方就称作便道（一般空间和停车场一样大））
+	Sqqueue *p = NULL;     //创建指向侯车场的指针
 	Sqstack_init(&ptr1);    //初始化停车场
 	Sqstack_init(&ptr2);    //初始化便道
 	Sqqueue_init(&p);       //初始化候车场
-
 	do
 	{
 		menu();
+		system("color 0D");
 		printf("请输入你的选择:");
 		scanf("%d", &input);
 		switch (input)
