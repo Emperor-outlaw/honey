@@ -116,6 +116,7 @@ void PreorderI(Pnode root, Pstack pstack)
 		}
 	}
 }
+
 //∑«µ›πÈ÷––Ú±È¿˙
 void InorderI(Pnode root, Pstack pstack)
 {
