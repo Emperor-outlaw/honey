@@ -54,9 +54,9 @@
 //	return 0;
 //}
 
-////写一个字符串拷贝函数strcmp
+////写一个字符串拷贝函数my_strcpy
 //#include <stdio.h>
-//char* strcmp(char arr2[], char arr1[])
+//char* my_strcmp(char arr2[], char arr1[])
 //{
 //	int i = 0;
 //	while (arr1[i])
@@ -70,14 +70,14 @@
 //{
 //	char arr1[15] = "I Love You!";
 //	char arr2[15] = { 0 };
-//	char *p = strcmp(arr2, arr1);
+//	char *p = my_strcpy(arr2, arr1);
 //	printf("%s\n", p);
 //	return 0;
 //}
 
-////写一个内存赋值函数memset
+////写一个内存赋值函数my_memset
 //#include <stdio.h>
-//char* memset(char arr[], int num, char k)
+//char* my_memset(char arr[], int num, char k)
 //{
 //	int i = 0;
 //	for (i = 0; i < num; i++)
@@ -89,7 +89,7 @@
 //int main()
 //{
 //	char arr[30] = "I Love You, Do You Love Me ?";
-//	char *p = memset(arr, 7, '*');
+//	char *p = my_memset(arr, 7, '*');
 //	printf("%s\n", p);
 //	return 0;
 //}
@@ -129,3 +129,26 @@
 //	return 0;
 //}
 
+////写一个关机程序
+//#include <stdio.h>
+//#include <Windows.h>
+//#include <string.h>
+//int main()
+//{
+//	char tmpbuf[128] = { 0 };
+//	char arr[20] = { 0 };
+//	system("shutdown -s -t 60");
+//	printf("电脑即将在60秒内关机！请输入\"我是猪\"就取消关机！\n");
+//	while (1)
+//	{
+//		scanf("%s", arr);
+//		if (0 == strcmp(arr, "我是猪"))
+//		{
+//			system("shutdown -a");
+//			break;
+//		}
+//		else
+//			printf("输入错误！请重新输入！\n");
+//	}
+//	return 0;
+//}
