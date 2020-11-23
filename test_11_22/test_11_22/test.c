@@ -7,6 +7,19 @@ typedef struct Stack
 	int top;
 }Stack, *PStack;
 
+int get_count(PStack pstack1)
+{
+	int i = 1;
+	int ret = 0;
+	while (pstack1->arr[pstack1->top] >= '0' && pstack1->arr[pstack1->top] <= '9')
+	{
+		ret += (pstack1->arr[pstack1->top--] - '0') * i;
+		i *= 10;
+	}
+	return ret;
+}
+
+
 //ÈëÕ»
 void pull_stack(PStack pstack1, char c)
 {
@@ -20,7 +33,7 @@ void push_stack(PStack pstack1, PStack pstack2)
 	{
 		pstack2->arr[++pstack2->top] = pstack1->arr[pstack1->top--];
 	}
-	int ret = pstack1->arr[pstack1->top--] - '0';
+	int ret = get_count(pstack1);
 	while (ret--)
 	{
 		int i = pstack2->top;
@@ -36,7 +49,7 @@ int main()
 {
 	Stack stack1 = { { 0 }, { -1 } };
 	Stack stack2 = { { 0 }, { -1 } };
-	char sarr[] = "ab9[d]9[c]";
+	char sarr[] = "ab12[d13[c]]";
 	int i = 0;
 	while (sarr[i])
 	{
