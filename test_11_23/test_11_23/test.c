@@ -127,58 +127,134 @@
 //小蓝跑步已经坚持了很长时间，从 2000 年 1 月 1 日周六（含）到 2020 年
 //10 月 1 日周四（含）。请问这段时间小蓝总共跑步多少千米？
 
-#include <stdio.h>
+//#include <stdio.h>
+//void calculate_kilometer(int *pday, int *pweek, int *pkilometer)
+//{
+//	if (8 == *pweek)
+//		*pweek = 1;
+//	if (1 == *pday || 1 == *pweek)
+//		*pkilometer += 2;
+//	else
+//		*pkilometer += 1;
+//	(*pweek)++;
+//	(*pday)++;
+//}
+//void calculate_yearkilometer(int *pweek, int *pkilometer, int num)
+//{
+//	int month = 1;
+//	int day = 1;
+//	while (month <= num)
+//	{
+//		if (month == 2)
+//		{
+//			day = 1;
+//			while (day <= 29)
+//			{
+//				calculate_kilometer(&day, pweek, pkilometer);
+//			}
+//		}
+//		else if (month == 4 || month == 6 || month == 9 || month == 11)
+//		{
+//			day = 1;
+//			while (day <= 30)
+//			{
+//				calculate_kilometer(&day, pweek, pkilometer);
+//			}
+//		}
+//		else
+//		{
+//			day = 1;
+//			while (day <= 31)
+//			{
+//				calculate_kilometer(&day, pweek, pkilometer);
+//			}
+//		}
+//		month++;
+//	}
+//}
+//int main()
+//{
+//	int year = 2000;
+//	int week = 6;
+//	int kilometer = 0;
+//	while (year <= 2020)
+//	{
+//		if (year < 2020)
+//		{
+//			calculate_yearkilometer(&week, &kilometer, 12);
+//		}
+//		else
+//		{
+//			calculate_yearkilometer(&week, &kilometer, 9);
+//		}
+//		year++;
+//	}
+//	printf("week = %d\n", week);
+//	printf("kilometer = %d\n", kilometer + 2);
+//	return 0;
+//}
 
-void calculate_kilometer(int *pday, int *pweek, int *pkilometer)
+//#include <stdio.h>
+//int main()
+//{
+//	int i = 0;
+//	double pass = 0;
+//	double excellent = 0;
+//	int arr[10] = { 0 };
+//	int n = 0;
+//	printf("请输入人数：>");
+//	scanf("%d", &n);
+//	for (i = 0; i < n; i++)
+//	{
+//		scanf("%d", &arr[i]);
+//		if (arr[i] >= 60)
+//			pass++;
+//		if (arr[i] >= 85)
+//			excellent++;
+//	}
+//	int pass_percentage = (int)((pass / n) * 100 + 0.5);
+//	int excellent_percentage = (int)((excellent / n) * 100 + 0.5);
+//	printf("pass_percentage = %d%%\n", pass_percentage);
+//	printf("excellent_percentage = %d%%\n", excellent_percentage);
+//	return 0;
+//}
+
+#include <stdio.h>
+int reverse_conversion(int n)
 {
-	if (8 == *pweek)
-		*pweek = 1;
-	if (1 == *pday || 1 == *pweek)
-		*pkilometer += 2;
-	else
-		*pkilometer += 1;
+	return (n % 10 * 10 + (n / 10) % 10);
 }
+
 int main()
 {
-	int month = 1;
-	int week = 6;
-	int day = 0;
-	int kilometer = 0;
-	while (month <= 9)
+	int input = 0;
+	printf("请输入一个八位的整数：>");
+	scanf("%d", &input);
+	//取八位数的高四位
+	int a = input / 10000;
+	//取八位数的低四位
+	int b = input % 10000;
+	//将高八位数倒着输出
+	//例如：1234 ——> 4321
+	int num1 = reverse_conversion(a);
+	int num2 = reverse_conversion(b / 100);
+	if (num1 <= 12)
 	{
-		if (month == 2)
+		if ((num1 == 1 || num1 == 3 || num1 == 5 || num1 == 7 || num1 == 8 || num1 == 10 || num1 == 12) && num2 <= 31)
 		{
-			day = 1;
-			while (day <= 29)
-			{
-				calculate_kilometer(&day, &week, &kilometer);
-				day++;
-				week++;
-			}
+
 		}
-		else if (month == 4 || month == 6 || month == 9)
-		{
-			day = 1;
-			while (day <= 30)
-			{
-				calculate_kilometer(&day, &week, &kilometer);
-				day++;
-				week++;
-			}
-		}
-		else
-		{ 
-			day = 1;
-			while (day <= 31)
-			{
-				calculate_kilometer(&day, &week, &kilometer);
-				day++;
-				week++;
-			}
-		}
-		month++;
 	}
-	printf("week = %d\n", week);
-	printf("kilometer = %d\n", kilometer + 2);
+
+
+
+
+
+
+
+
+
 	return 0;
+
+
 }
