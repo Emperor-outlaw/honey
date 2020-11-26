@@ -194,6 +194,7 @@
 //	return 0;
 //}
 
+
 //#include <stdio.h>
 //int main()
 //{
@@ -219,42 +220,136 @@
 //	return 0;
 //}
 
+
 #include <stdio.h>
 int reverse_conversion(int n)
 {
 	return (n % 10 * 10 + (n / 10) % 10);
 }
-
+void print(int a, int num1, int num2, int input, int *pflag)
+{
+	if ((a * 10000 + (num1 * 100 + num2)) > input)
+	{
+		printf("%ld\n", (a * 10000 + (num1 * 100 + num2)));
+		*pflag = 1;
+	}
+}
 int main()
 {
-	int input = 0;
+	int flag = 0;
+	long input = 0;
 	printf("请输入一个八位的整数：>");
 	scanf("%d", &input);
-	//取八位数的高四位
-	int a = input / 10000;
-	//取八位数的低四位
-	int b = input % 10000;
-	//将高八位数倒着输出
-	//例如：1234 ——> 4321
-	int num1 = reverse_conversion(a);
-	int num2 = reverse_conversion(b / 100);
-	if (num1 <= 12)
+	while (1)
 	{
-		if ((num1 == 1 || num1 == 3 || num1 == 5 || num1 == 7 || num1 == 8 || num1 == 10 || num1 == 12) && num2 <= 31)
+		//取八位数的高四位
+		int a = input / 10000;
+		//取八位数的低四位
+		int b = input % 10000;
+		//将高八位数倒着输出
+		//例如：1234 ——> 4321
+		int num1 = reverse_conversion(a);
+		int num2 = reverse_conversion(a / 100);
+		if (num1 <= 12)
 		{
-
+			if ((num1 == 1 || num1 == 3 || num1 == 5 || num1 == 7 || num1 == 8 || num1 == 10 || num1 == 12) && num2 <= 31)
+			{
+				if (flag == 0)
+				{
+					print(a, num1, num2, input, &flag);
+				}
+				if (num1 == num2)
+				{
+					print(a, num1, num2, input, &flag);
+					break;
+				}
+			}
+			else if (num1 == 2 && num2 <= 29)
+			{
+				if ((a * 10000 + (num1 * 100 + num2)) > input)
+				{
+					if (flag == 0)
+					{
+						print(a, num1, num2, input, &flag);
+					}
+					if (num1 == num2)
+					{
+						print(a, num1, num2, input, &flag);
+						break;
+					}
+				}
+			}
+			else if (num2 <= 30)
+			{
+				if ((a * 10000 + (num1 * 100 + num2)) > input)
+				{
+					if (flag == 0)
+					{
+						print(a, num1, num2, input, &flag);
+					}
+					if (num1 == num2)
+					{
+						print(a, num1, num2, input, &flag);
+						break;
+					}
+				}
+			}
 		}
+		input++;
 	}
-
-
-
-
-
-
-
-
-
 	return 0;
-
-
 }
+
+
+
+//优化
+//#include <stdio.h>
+//int search_char(char *parr, char c)
+//{
+//	while (*parr)
+//	{
+//		if (*parr == c)
+//		{
+//			return 1;
+//		}
+//		parr++;
+//	}
+//	return 0;
+//}
+//int find_difchar(char *p1, char *p2)
+//{
+//	char *p = p1;
+//	int count = 0;
+//	int i = 0;
+//	char arr[20] = "0";
+//	while (p <= p2)
+//	{
+//		if (0 == search_char(arr, *p))
+//		{
+//			arr[i++] = *p;
+//			count++;
+//		}
+//		p++;
+//	}
+//	return count;
+//}
+//int main()
+//{
+//	int ret = 0;
+//	char *p1 = "ababc";
+//	char *p2 = p1;
+//	//1、分配字符串
+//	while (*p1)
+//	{
+//		p2 = p1;
+//		while (*p2)
+//		{
+//			//2、查找不同的字符并记录
+//			ret += find_difchar(p1, p2);
+//			p2++;
+//		}
+//		p1++;
+//	}	
+//	printf("ret = %d\n", ret);
+//	return 0;
+//}
