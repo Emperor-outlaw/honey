@@ -15,22 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="4.7.1 多态的基本概念.cpp">
+    <ClCompile Include="5.1.1 写文件.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="4.7.2 多态案例1———计算机类.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="4.7.3 纯虚函数和抽象类.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="4.7.4 多态案例2——制作饮品.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="4.7.5 虚析构和纯虚析构.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="4.7.6 多态案例3——电脑组装.cpp">
+    <ClCompile Include="5.1.2 读文件.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -15,22 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="4.5.1 加号运算符重载.cpp">
+    <ClCompile Include="5.2.1 写文件.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="4.5.2 左移运算符重载.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="4.5.3 递增运算符重载.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="4.5.4 赋值运算符重载.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="4.5.5 关系运算符重载.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="4.5.6 函数调用运算符重载.cpp">
+    <ClCompile Include="5.2.2 读文件.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

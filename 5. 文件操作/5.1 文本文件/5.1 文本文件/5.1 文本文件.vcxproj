@@ -11,8 +11,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{74BAE987-6F91-404C-9C08-DADE85C40D83}</ProjectGuid>
-    <RootNamespace>My45运算符重载</RootNamespace>
+    <ProjectGuid>{FD4F33D5-9274-445A-A0F2-24A42A1A64A7}</ProjectGuid>
+    <RootNamespace>My51文本文件</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -65,12 +65,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="4.5.1 加号运算符重载.cpp" />
-    <ClCompile Include="4.5.2 左移运算符重载.cpp" />
-    <ClCompile Include="4.5.3 递增运算符重载.cpp" />
-    <ClCompile Include="4.5.4 赋值运算符重载.cpp" />
-    <ClCompile Include="4.5.5 关系运算符重载.cpp" />
-    <ClCompile Include="4.5.6 函数调用运算符重载.cpp" />
+    <ClCompile Include="5.1.1 写文件.cpp" />
+    <ClCompile Include="5.1.2 读文件.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
