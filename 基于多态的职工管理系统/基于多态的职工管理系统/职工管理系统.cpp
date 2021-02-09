@@ -12,6 +12,7 @@ int main()
 	do
 	{
 		wm.ShowMenu();
+		system("color 0D");
 		cout << "请输入你的选择: "<< endl;
 		cin >> ret;
 		switch (ret)
@@ -55,7 +56,8 @@ int main()
 		case 7:
 			//清空所有文档
 			wm.Empty();
-
+			system("pause");
+			system("cls");
 			break;
 		case 0:
 			//退出系统

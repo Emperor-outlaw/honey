@@ -30,8 +30,6 @@ WorkerManager::WorkerManager()
 		m_AllNum = 0;
 		//初始化职工数组指针
 		m_EmpArr = NULL;
-		//初始换文件是否为空标志
-		m_FileIsEmpty = false;
 		ifs.close();
 	}
 	else
@@ -46,8 +44,6 @@ WorkerManager::WorkerManager()
 		//2、将文件中的职工保存到数组中
 		InitEmpArr();
 
-		//初始换文件是否为空标志
-		m_FileIsEmpty = false;
 		ifs.close();
 	}
 
@@ -142,8 +138,6 @@ void WorkerManager::AddEmp()
 			//更新职工数组的大小
 			m_AllNum = NewNum;
 
-			//文件是否为空标志赋值为真
-			m_FileIsEmpty = true;
 
 			//成功添加完职工
 			cout << "成功添加了" << AddNum << "名职工" << endl;
@@ -265,7 +259,10 @@ void WorkerManager::DeleteEmp()
 	if (-1 != val)
 	{
 		//存在
-		//删除（元素覆盖）
+		//1、释放职工数组中的对象
+		delete m_EmpArr[val];
+		m_EmpArr[val] = NULL;
+		//2、元素覆盖（后面元素前移）
 		for (int i = val; i < m_AllNum - 1; i++)
 		{
 			m_EmpArr[i] = m_EmpArr[i + 1];
@@ -410,7 +407,39 @@ void WorkerManager::Sort()
 //清空文档
 void WorkerManager::Empty()
 {
-
+	cout << "请是否确认清空：" << endl;
+	cout << "1、确认" << endl;
+	cout << "2、返回" << endl;
+	int tmp = 0;
+	cin >> tmp;
+	if (1 == tmp)
+	{
+		//清空文档
+		//1、清空文件中的内容(使用trunc方式打开，如果文件存在，先删除再创建，相当于清空了文件)
+		ofstream ofs(FILENAME, ios::trunc);
+		//ofs.open(FILENAME, ios::trunc);
+		ofs.close();
+		//2、清空堆区指针指向的空间
+		if (m_EmpArr != NULL)    //判断堆区是否有职工对象
+		{
+			//依次释放堆区数组中的每个职工对象
+			for (int i = 0; i < m_AllNum; i++)
+			{
+				delete m_EmpArr[i];
+				m_EmpArr[i] = NULL;
+			}
+			//删除堆区指针数组
+			delete m_EmpArr;
+			m_EmpArr = NULL;
+			//更新成员数量
+			m_AllNum = 0;
+		}
+		cout << "清空成功！" << endl;
+	}
+	else
+	{
+		return;
+	}
 
 }
 

@@ -20,9 +20,6 @@ public:
 	//将数据添加到文件中
 	void Save();
 
-	//文件是否为空标志
-	bool m_FileIsEmpty;
-
 	//获取文件中职工的数目
 	int GetFileNum();
 
