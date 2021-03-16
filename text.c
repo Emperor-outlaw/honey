@@ -474,7 +474,7 @@ int main ()
 //	}	
 //	return 0;
 //}
-//关机程序 
+//////关机程序 
 //#include <stdio.h>
 //#include <stdlib.h>
 //#include <string.h>
@@ -489,7 +489,7 @@ int main ()
 //		scanf("%s",input);
 //		if(strcmp(input,"我是一头死肥猪")==0)
 //		{
-//			system("shutdown -a");//“解除关机命令” 
+//			system("down -a");//“解除关机命令” 
 //			break;
 //		}
 //	}	
@@ -1220,285 +1220,285 @@ int main ()
 //	return 0;
 //} 
 //三子棋小游戏 
-//#include <stdio.h>
-//#include <string.h>
-//#include <time.h>
-//#include <stdlib.h>
-//#define ROW 3//棋盘的行数 
-//#define COL 3//棋盘的列数 
-//void menu()
-//{
-//	
-//	printf("*****************\n");
-//	printf("**** 1、Play ****\n");
-//	printf("**** 0、Exit ****\n");
-//	printf("*****************\n");	 
-//}
-//void initboard(char board[ROW][COL],int row,int col)
-//{
-////	int i=0;
-////	int j=0;
-////	for(i=0;i<ROW;i++)
-////	{
-////		for(j=0;j<COL;j++)
-////		{
-////			board[i][j]==' ';
-////		}
-////	}
-//	memset(board,' ',row*col*sizeof(board[0][0]));
-//}
-//void display(char board[ROW][COL],int row,int col)
-//{
+#include <stdio.h>
+#include <string.h>
+#include <time.h>
+#include <stdlib.h>
+#define ROW 3//棋盘的行数 
+#define COL 3//棋盘的列数 
+void menu()
+{
+	
+	printf("*****************\n");
+	printf("**** 1、Play ****\n");
+	printf("**** 0、Exit ****\n");
+	printf("*****************\n");	 
+}
+void initboard(char board[ROW][COL],int row,int col)
+{
 //	int i=0;
 //	int j=0;
-//	for(i=0;i<row;i++)
+//	for(i=0;i<ROW;i++)
 //	{
-////		printf(" %c | %c | %c \n",board[i][0],board[i][1],board[i][2]);
-//		for(j=0;j<col;j++)
+//		for(j=0;j<COL;j++)
 //		{
-//			printf(" %c ",board[i][j]);
-//			if(j<col-1)
-//			{
-//				printf("|");
-//			}			
-//		}
-//		printf("\n");
-//		if(i<row-1)
-//		{
-////		    printf("---|---|---\n");
-//		    for(j=0;j<col;j++)
-//		    {
-//		    	printf("---");
-//		    	if(j<col-1)
-//		    	{
-//		    		printf("|");
-//		    	}
-//		    }
-//		}
-//		printf("\n");
-//	}
-//	
-//}
-//void playermove(char board[ROW][COL],int row,int col)
-//{
-//	int x=0;
-//	int y=0;
-//	printf("玩家走:>\n");
-//	while(1)
-//	{
-//			printf("请输入你走的坐标:>\n");
-//	        scanf("%d%d",&x,&y);
-//        	if(x>=1&&x<=row&&y>=0&&y<=col)
-//        	{
-//          		if(board[x-1][y-1]!='*'&&board[x-1][y-1]!='#')
-//				  {
-//				  	board[x-1][y-1]='*';
-//				  	break;
-//				  } 
-//          		else
-//          		{
-//          			printf("此坐标已被走过,请重新选择\n");
-//          		}		        
-//	        }
-//	        else
-//	        {
-//		    printf("输入坐标超过范围，请重新输入\n");
-//            }
-//   	}	
-//}
-//void computermove(char board[ROW][COL],int row,int col)
-//{
-//	int x=0;
-//	int y=0;
-//	printf("电脑走:>\n");
-//	while(1)
-//	{
-//			x=rand()%row;
-//			y=rand()%col;
-////	        if(x>=0&&x<=row&&y>=0&&y<=col)
-////	       {
-//        		if(board[x][y]!='*'&&board[x][y]!='#')
-//	        	{
-//		        	board[x][y]='#';
-//		        	break;
-//		        }
-////	       }
-//	}	
-//}
-//int boardfull(char board[ROW][COL],int row,int col)
-//{
-//	int i=0;
-//	int j=0;
-//	for(i=0;i<row;i++)
-//	{
-//		for(j=0;j<col;j++)
-//		{
-//			if(board[i][j]==' ')
-//			{
-//				return 0;
-//			}
+//			board[i][j]==' ';
 //		}
 //	}
-//	return 1;
-//}
-//char is_win(char board[ROW][COL],int row,int col)
-//{
-//	int i=0;
-//	int j=0;
-//	int ret=0;
-//	for(i=0;i<row;i++)
-//	{
-//		for(j=0;j<col;j++)
+	memset(board,' ',row*col*sizeof(board[0][0]));
+}
+void display(char board[ROW][COL],int row,int col)
+{
+	int i=0;
+	int j=0;
+	for(i=0;i<row;i++)
+	{
+//		printf(" %c | %c | %c \n",board[i][0],board[i][1],board[i][2]);
+		for(j=0;j<col;j++)
+		{
+			printf(" %c ",board[i][j]);
+			if(j<col-1)
+			{
+				printf("|");
+			}			
+		}
+		printf("\n");
+		if(i<row-1)
+		{
+//		    printf("---|---|---\n");
+		    for(j=0;j<col;j++)
+		    {
+		    	printf("---");
+		    	if(j<col-1)
+		    	{
+		    		printf("|");
+		    	}
+		    }
+		}
+		printf("\n");
+	}
+	
+}
+void playermove(char board[ROW][COL],int row,int col)
+{
+	int x=0;
+	int y=0;
+	printf("玩家走:>\n");
+	while(1)
+	{
+			printf("请输入你走的坐标:>\n");
+	        scanf("%d%d",&x,&y);
+        	if(x>=1&&x<=row&&y>=0&&y<=col)
+        	{
+          		if(board[x-1][y-1]!='*'&&board[x-1][y-1]!='#')
+				  {
+				  	board[x-1][y-1]='*';
+				  	break;
+				  } 
+          		else
+          		{
+          			printf("此坐标已被走过,请重新选择\n");
+          		}		        
+	        }
+	        else
+	        {
+		    printf("输入坐标超过范围，请重新输入\n");
+            }
+   	}	
+}
+void computermove(char board[ROW][COL],int row,int col)
+{
+	int x=0;
+	int y=0;
+	printf("电脑走:>\n");
+	while(1)
+	{
+			x=rand()%row;
+			y=rand()%col;
+//	        if(x>=0&&x<=row&&y>=0&&y<=col)
+//	       {
+        		if(board[x][y]!='*'&&board[x][y]!='#')
+	        	{
+		        	board[x][y]='#';
+		        	break;
+		        }
+//	       }
+	}	
+}
+int boardfull(char board[ROW][COL],int row,int col)
+{
+	int i=0;
+	int j=0;
+	for(i=0;i<row;i++)
+	{
+		for(j=0;j<col;j++)
+		{
+			if(board[i][j]==' ')
+			{
+				return 0;
+			}
+		}
+	}
+	return 1;
+}
+char is_win(char board[ROW][COL],int row,int col)
+{
+	int i=0;
+	int j=0;
+	int ret=0;
+	for(i=0;i<row;i++)
+	{
+		for(j=0;j<col;j++)
+		{
+			if(board[i][0]==board[i][j]&&board[i][0]!=' ')
+			{
+				continue ;
+			}
+			else
+			{
+				break;
+			}
+		}
+		if(j==col)
+		{
+			return board[i][0];			
+		}
+//		if(board[i][col]==board[i][1]&&board[i][1]==board[i][2]&&board[i][0]!=' ')
 //		{
-//			if(board[i][0]==board[i][j]&&board[i][0]!=' ')
-//			{
-//				continue ;
-//			}
-//			else
-//			{
-//				break;
-//			}
-//		}
-//		if(j==col)
-//		{
-//			return board[i][0];			
-//		}
-////		if(board[i][col]==board[i][1]&&board[i][1]==board[i][2]&&board[i][0]!=' ')
-////		{
-////			return board[i][0];		
-////		}		
-//	}
-//	for(i=0;i<col;i++)
-//	{
-//		for(j=0;j<row;j++)
-//		{
-//			if(board[0][i]==board[j][i]&&board[0][i]!=' ')
-//			{
-//				continue ;
-//			}
-//			else
-//			{
-//				break;
-//			}
-//		}
-//		if(j==row)
-//		{
-//			return board[0][i];			
-//		}
-////		if(board[0][i]==board[1][i]&&board[1][i]==board[2][i]&&board[0][i]!=' ')
-////		{
-////			return board[0][i];
-////		}
-//	}
-////	if(board[0][0]==board[1][1]&&board[1][1]==board[2][2]&&board[0][0]!=' '||board[0][2]==board[1][1]&&board[1][1]==board[2][0]&&board[0][2]!=' ')
-////	{
-////	      	return board[1][1];
-////	}
-//	for(i=0;i<row;i++)
-//	{
-//		if(board[0][0]==board[i][i]&&board[0][0]!=' ')
-//		{
-//			continue ;
-//		}
-//		else
-//		{
-//			break;
+//			return board[i][0];		
 //		}		
-//	}
-//	if(i==row)
-//	{
-//		return board[0][0];
-//	}
-//	for(i=0;i<row;i++)
-//	{		
-//		if(	board[0][row-1]==board[i][row-1-i]&&board[0][row-1]!=' ')
+	}
+	for(i=0;i<col;i++)
+	{
+		for(j=0;j<row;j++)
+		{
+			if(board[0][i]==board[j][i]&&board[0][i]!=' ')
+			{
+				continue ;
+			}
+			else
+			{
+				break;
+			}
+		}
+		if(j==row)
+		{
+			return board[0][i];			
+		}
+//		if(board[0][i]==board[1][i]&&board[1][i]==board[2][i]&&board[0][i]!=' ')
 //		{
-//			continue ;
+//			return board[0][i];
 //		}
-//		else
-//		{
-//			break;
-//		}	
+	}
+//	if(board[0][0]==board[1][1]&&board[1][1]==board[2][2]&&board[0][0]!=' '||board[0][2]==board[1][1]&&board[1][1]==board[2][0]&&board[0][2]!=' ')
+//	{
+//	      	return board[1][1];
 //	}
-//	if(i==row)
-//	{
-//		return board[0][row-1];
-//	}                              
-//	if(boardfull(board,ROW,COL)==1)//走到这一步，目前无人赢，判断是否棋盘满了，若满了则是平局，否则继续。 
-//	{
-//		return 'd';
-//	}	
-//	return 'c'; 
-//}
-//void game ()
-//{
-//	char ret=0;
-//	srand((unsigned int)time(NULL));
-//	char board[ROW][COL]={0};
-//	initboard(board,ROW,COL);
-//	display(board,ROW,COL);
-//	while(1)
-//	{
-//		//玩家走 
-//		playermove(board,ROW,COL);	
-//	    display(board,ROW,COL);	
-//	    //判断 	    
-//	    //*————玩家赢
-//		//#————电脑赢
-//		//Continue————继续
-//		//draw————平局 
-//		ret=is_win(board,ROW,COL);
-//		if(ret!='c')
-//		    break;		
-//	    //电脑走 
-//	    computermove(board,ROW,COL);
-//	    display(board,ROW,COL);
-//	    ret=is_win(board,ROW,COL);
-//	    if(ret!='c')
-//		    break;
-//	}
-//	if(ret=='*')
-//	{
-//		printf("玩家赢\n");
-//	}
-//	else if(ret=='#')
-//	{
-//		printf("电脑赢\n"); 
-//	}
-//	else if(ret=='d')
-//	{
-//		printf("平局\n");
-//	}	
-//}
-//void test()
-//{
-//	int input=0;
-//	do
-//	{
-//		menu();
-//	    printf("请选择你要玩的游戏:>\n");
-//	    scanf("%d",&input);
-//	    switch(input) 
-//		{
-//			case 1:
-//				game();
-//				break; 
-//			case 0:
-//				printf("退出游戏\n");
-//				break;
-//			default:
-//				printf("输入错误，请重新输入\n");
-//				break;
-//		}
-//	}
-//	while(input);
-//}
-//int main()
-//{
-//	test();
-//	return 0;
-//} 
-//扫雷小游戏 
+	for(i=0;i<row;i++)
+	{
+		if(board[0][0]==board[i][i]&&board[0][0]!=' ')
+		{
+			continue ;
+		}
+		else
+		{
+			break;
+		}		
+	}
+	if(i==row)
+	{
+		return board[0][0];
+	}
+	for(i=0;i<row;i++)
+	{		
+		if(	board[0][row-1]==board[i][row-1-i]&&board[0][row-1]!=' ')
+		{
+			continue ;
+		}
+		else
+		{
+			break;
+		}	
+	}
+	if(i==row)
+	{
+		return board[0][row-1];
+	}                              
+	if(boardfull(board,ROW,COL)==1)//走到这一步，目前无人赢，判断是否棋盘满了，若满了则是平局，否则继续。 
+	{
+		return 'd';
+	}	
+	return 'c'; 
+}
+void game ()
+{
+	char ret=0;
+	srand((unsigned int)time(NULL));
+	char board[ROW][COL]={0};
+	initboard(board,ROW,COL);
+	display(board,ROW,COL);
+	while(1)
+	{
+		//玩家走 
+		playermove(board,ROW,COL);	
+	    display(board,ROW,COL);	
+	    //判断 	    
+	    //*————玩家赢
+		//#————电脑赢
+		//Continue————继续
+		//draw————平局 
+		ret=is_win(board,ROW,COL);
+		if(ret!='c')
+		    break;		
+	    //电脑走 
+	    computermove(board,ROW,COL);
+	    display(board,ROW,COL);
+	    ret=is_win(board,ROW,COL);
+	    if(ret!='c')
+		    break;
+	}
+	if(ret=='*')
+	{
+		printf("玩家赢\n");
+	}
+	else if(ret=='#')
+	{
+		printf("电脑赢\n"); 
+	}
+	else if(ret=='d')
+	{
+		printf("平局\n");
+	}	
+}
+void test()
+{
+	int input=0;
+	do
+	{
+		menu();
+	    printf("请选择你要玩的游戏:>\n");
+	    scanf("%d",&input);
+	    switch(input) 
+		{
+			case 1:
+				game();
+				break; 
+			case 0:
+				printf("退出游戏\n");
+				break;
+			default:
+				printf("输入错误，请重新输入\n");
+				break;
+		}
+	}
+	while(input);
+}
+int main()
+{
+	test();
+	return 0;
+} 
+////扫雷小游戏 
 //#include <stdio.h>
 //#include <string.h>
 //#include <time.h>
@@ -1507,7 +1507,7 @@ int main ()
 //#define COL 9
 //#define ROWS (ROW+2)
 //#define COLS (COL+2)
-//#define count 10 
+//#define count 80 
 //void menu()
 //{
 //	printf("*****************\n");
