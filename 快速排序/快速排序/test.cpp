@@ -32,7 +32,7 @@ int main()
 	q_sort(arr, 0, sizeof(arr) / sizeof(arr[0]) - 1);
 	for (int i = 0; i < sizeof(arr) / sizeof(arr[0]); i++)
 	{
-		cout << arr[i] << " " << endl;
+		cout << arr[i] << endl;
 	}
 	return 0;
 }

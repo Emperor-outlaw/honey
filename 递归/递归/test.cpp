@@ -40,53 +40,119 @@ using namespace std;
 
 
 ////N皇后
+//#include <cmath>
+//int Case = 1;  //第n个结果的标志
+//void output_result(int queen[], int n)
+//{
+//	cout << "Case " << Case++ << endl;
+//	for (int i = 0; i < n; i++)
+//	{
+//		cout << queen[i] + 1 << " ";
+//	}
+//	cout << endl;
+//}
+//void squeen(int queen[], int n, int k)
+//{
+//	if (k == n)
+//	{
+//		output_result(queen, n);
+//		return;
+//	}
+//	//认为前1~k-1个已经摆好了，现在开始摆第k个
+//	for (int i = 0; i < n; i++)
+//	{
+//		int j = 0;
+//		for (j = 0; j < k; j++)
+//		{
+//			if ((queen[j] == i) || abs(queen[j] - i) == abs(k - j))
+//				break;
+//		}
+//		if (j == k)
+//		{
+//			queen[k] = i;
+//			squeen(queen, n, k + 1);
+//		}
+//	}
+//}
+//
+//int main()
+//{
+//	int queen[50];
+//	int T = 0;
+//	cin >> T;
+//	for (int i = 0; i < T; i++)
+//	{
+//		int n = 0;
+//		cin >> n;
+//		squeen(queen, n, 0);
+//	}
+//	return 0;
+//}
+
+////逆波兰表达式
+//#include <cmath>
+//double exp()
+//{
+//	char arr[10];
+//	cin >> arr;
+//	switch (arr[0])
+//	{
+//	case '+':
+//		return exp() + exp();
+//	case '-':
+//		return exp() + exp();
+//	case '*':
+//		return exp() + exp();
+//	case '/':
+//		return exp() + exp();
+//	default: 
+//		return atof(arr);
+//		break;
+//	}
+//}
+//int main()
+//{
+//	double ret = exp();
+//	cout << ret << endl;
+//	return 0;
+//}
+
+////上台阶(一次可以走一个台阶，一次也可以走两个台阶，问n个台阶有多少种走法)
+////f(n) = f(n - 1) + f(n - 2)
+//int stair(int n)
+//{
+//	if (n == 1)
+//		return 1;
+//	if (n == 2)
+//		return 2;
+//	return stair(n - 1) + stair(n - 2);
+//}
 //int main()
 //{
 //	int n = 0;
 //	cin >> n;
-//
+//	int ret = stair(n);
+//	cout << ret << endl;
 //	return 0;
 //}
 
-//逆波兰表达式
 
-#include<conio.h>
-#include<stdio.h>
-#include<string.h>
-#include<stdlib.h>
+//上台阶(一次可以走一个台阶，一次也可以走两个台阶，一次也可以走n个台阶，问n个台阶有多少种走法)
+int stair(int n)
+{
 
-char *fun(char(*a)[81], int num, char *max)
-{
-	int i = 0;
-	max = a[0];
-	for (i = 0; i<num; i++)         /*找出最长的一个字符串*/
-		if (strlen(max)<strlen(a[i]))
-			max = a[i];
-	return max;                /*传回最长字符串的地址*/
-}
-void main()
-{
-	FILE *wf;
-	char ss[10][81], *ps = NULL;
-	char s[3][81] = { "abcd", "deg", "diegns" }, *p = NULL;
-	int  i = 0, n;
-	system("CLS");
-	printf("输入若干个字符串：");
-	gets(ss[i]);
-	puts(ss[i]);
-	while (!strcmp(ss[i], "****") == 0)  /*用4个星号作为结束输入的标志*/
+	for (int i = 1; i <= n; i++)
 	{
-		i++;
-		gets(ss[i]);
-		puts(ss[i]);
+		return stair(n - i);
 	}
-	n = i;
-	ps = fun(ss, n, ps);
-	printf("\nmax=%s\n", ps);
-	/******************************/
-	wf = fopen("out.dat", "w");
-	p = fun(s, 3, p);
-	fprintf(wf, "%s", p);
-	fclose(wf);
-	/*****************************/
+
 }
+int main()
+{
+	int n = 0;
+	cin >> n;
+	int ret = stair(n);
+	cout << ret << endl;
+	return 0;
+}
+
