@@ -18,37 +18,39 @@ using namespace std;
 //}
 
 
-////汉诺塔游戏
-//void Hanio(int n, char scr, char mid, char dest)
-//{
-//	if (n == 1)
-//	{
-//		cout << n  << "从" << scr << "->" << dest << endl;
-//		return;
-//	}
-//	Hanio(n - 1, scr, dest, mid);
-//	cout << n  << "从" << scr << "->" << dest << endl;
-//	Hanio(n - 1, mid, scr, dest);
-//}
-//int main()
-//{
-//	int n = 0;
-//	cin >> n;
-//	Hanio(n, 'A', 'B', 'C');
-//	return 0;
-//}
+//汉诺塔游戏
+void Hanio(int n, char scr, char mid, char dest)
+{
+	if (n == 1)
+	{
+		cout << n  << "从" << scr << "->" << dest << endl;
+		return;
+	}
+	Hanio(n - 1, scr, dest, mid);
+	cout << n  << "从" << scr << "->" << dest << endl;
+	Hanio(n - 1, mid, scr, dest);
+}
+int main()
+{
+	int n = 0;
+	cin >> n;
+	Hanio(n, 'A', 'B', 'C');
+	return 0;
+}
 
 
-////N皇后
+////n皇后
 //#include <cmath>
 //int Case = 1;  //第n个结果的标志
+//int count = 0;
 //void output_result(int queen[], int n)
 //{
-//	cout << "Case " << Case++ << endl;
+//	cout << "case " << ::Case++ << endl;
 //	for (int i = 0; i < n; i++)
 //	{
 //		cout << queen[i] + 1 << " ";
 //	}
+//	::count++;
 //	cout << endl;
 //}
 //void squeen(int queen[], int n, int k)
@@ -78,14 +80,15 @@ using namespace std;
 //int main()
 //{
 //	int queen[50];
-//	int T = 0;
-//	cin >> T;
-//	for (int i = 0; i < T; i++)
+//	int t = 0;
+//	cin >> t;
+//	for (int i = 0; i < t; i++)
 //	{
 //		int n = 0;
 //		cin >> n;
 //		squeen(queen, n, 0);
 //	}
+//	cout << " count = " << ::count << endl;
 //	return 0;
 //}
 
@@ -137,22 +140,22 @@ using namespace std;
 //}
 
 
-//上台阶(一次可以走一个台阶，一次也可以走两个台阶，一次也可以走n个台阶，问n个台阶有多少种走法)
-int stair(int n)
-{
-
-	for (int i = 1; i <= n; i++)
-	{
-		return stair(n - i);
-	}
-
-}
-int main()
-{
-	int n = 0;
-	cin >> n;
-	int ret = stair(n);
-	cout << ret << endl;
-	return 0;
-}
+////上台阶(一次可以走一个台阶，一次也可以走两个台阶，一次也可以走n个台阶，问n个台阶有多少种走法)
+//int stair(int n)
+//{
+//
+//	for (int i = 1; i <= n; i++)
+//	{
+//		return stair(n - i);
+//	}
+//
+//}
+//int main()
+//{
+//	int n = 0;
+//	cin >> n;
+//	int ret = stair(n);
+//	cout << ret << endl;
+//	return 0;
+//}
 
