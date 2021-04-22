@@ -4,6 +4,7 @@
 #include <string>
 using namespace std;
 #define N 52
+int count = 0;
 int color[N][N];
 string str = "01010101001011001001010110010110100100001000101010\
 00001000100000101010010000100000001001100110100101\
@@ -93,7 +94,7 @@ void bfs(int c, int l, int f)
 	if (c == C - 1 && l == R - 1)
 	{
 		cout << "--------------" << endl;
-		cout << c << " " << l << endl;
+		//cout << c << " " << l << endl;
 		return;
 	}
 	//output();
@@ -126,6 +127,7 @@ void bfs(int c, int l, int f)
 
 void print(int k)
 {
+	::count++;
 	if (k == 0)
 		return;
 	int i = queue.a[k].c;
@@ -167,6 +169,7 @@ int main()
 		}
 		cout << endl;
 	}
+	cout << "count = " << ::count << endl;
 	return 0;
 }
 
