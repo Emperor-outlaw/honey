@@ -47,6 +47,7 @@ int main()
 		else if (input == 0)
 		{
 			printf("退出程序！\n");
+			free(con.data); //释放动态开辟内存
 			break;
 		}
 		else

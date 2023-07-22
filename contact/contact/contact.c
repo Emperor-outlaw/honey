@@ -4,16 +4,22 @@
 //初始化通讯录
 void initContact(Contact* pcon)
 {
-	pcon->sz = 0;
-	memset(pcon->data, 0, sizeof(pcon->data[0]) * MAX);
+	pcon->sz = 0; //
+	pcon->capacity = DEFAULT_MAX;
+	PerInfo* p = (PerInfo*)calloc(DEFAULT_MAX, sizeof(PerInfo)); //动态开辟存放联系人的空间
+	if (p == NULL)
+	{
+		perror("calloc");
+		return;
+	}
+	pcon->data = p;
 }
-
 
 //按姓名查找
 int* searchByName(const Contact* pcon)
 {
 	char name[20] = { 0 };
-	int* arr = (int*)calloc(MAX + 1, sizeof(int)); //记录查找到的联系人下标，数组第一个元素记录查找到了多少个人，后面的元素是查找到的联系人下标
+	int* arr = (int*)calloc(pcon->capacity + 1, sizeof(int)); //记录查找到的联系人下标，数组第一个元素记录查找到了多少个人，后面的元素是查找到的联系人下标
 	printf("请输入姓名：");
 	scanf("%s", name);
 	int i = 0;
@@ -21,7 +27,7 @@ int* searchByName(const Contact* pcon)
 	{
 		if (strcmp(pcon->data[i].name, name) == 0)
 		{
-			arr[arr[0]++] = i;
+			arr[++arr[0]] = i;
 		}
 	}
 	return arr;
@@ -31,7 +37,7 @@ int* searchByName(const Contact* pcon)
 int* searchByAge(const Contact* pcon)
 {
 	int age = 0;
-	int* arr = (int*)calloc(MAX + 1, sizeof(int));
+	int* arr = (int*)calloc(pcon->capacity + 1, sizeof(int));
 	printf("请输入年龄：");
 	scanf("%d", &age);
 	int i = 0;
@@ -39,7 +45,8 @@ int* searchByAge(const Contact* pcon)
 	{
 		if (pcon->data[i].age == age)
 		{
-			arr[arr[0]++] = i;
+			
+			arr[++arr[0]] = i;
 		}
 	}
 	return arr;
@@ -49,7 +56,7 @@ int* searchByAge(const Contact* pcon)
 int* searchBySex(const Contact* pcon)
 {
 	char sex[5] = { 0 }; 
-	int* arr = (int*)calloc(MAX + 1, sizeof(int));
+	int* arr = (int*)calloc(pcon->capacity + 1, sizeof(int));
 	printf("请输入性别：");
 	scanf("%s", sex);
 	int i = 0;
@@ -57,7 +64,7 @@ int* searchBySex(const Contact* pcon)
 	{
 		if (strcmp(pcon->data[i].sex, sex) == 0)
 		{
-			arr[arr[0]++] = i;
+			arr[++arr[0]] = i;
 		}
 	}
 	return arr;
@@ -67,7 +74,7 @@ int* searchBySex(const Contact* pcon)
 int* searchByTele(const Contact* pcon)
 {
 	char tele[12] = { 0 };
-	int* arr = (int*)calloc(MAX + 1, sizeof(int));
+	int* arr = (int*)calloc(pcon->capacity + 1, sizeof(int));
 	printf("请输入电话：");
 	scanf("%s", tele);
 	int i = 0;
@@ -75,7 +82,7 @@ int* searchByTele(const Contact* pcon)
 	{
 		if (strcmp(pcon->data[i].tele, tele) == 0)
 		{
-			arr[arr[0]++] = i;
+			arr[++arr[0]] = i;
 		}
 	}
 	return arr;
@@ -85,7 +92,7 @@ int* searchByTele(const Contact* pcon)
 int* searchByAddr(const Contact* pcon)
 {
 	char addr[20] = { 0 };
-	int* arr = (int*)calloc(MAX + 1, sizeof(int));
+	int* arr = (int*)calloc(pcon->capacity + 1, sizeof(int));
 	printf("请输入地址：");
 	scanf("%s", addr);
 	int i = 0;
@@ -93,10 +100,26 @@ int* searchByAddr(const Contact* pcon)
 	{
 		if (strcmp(pcon->data[i].addr, addr) == 0)
 		{
-			arr[arr[0]++] = i;
+			arr[++arr[0]] = i;
 		}
 	}
 	return arr;
+}
+
+//通讯录扩容
+void increaseCapcity(Contact* pcon, int n)
+{
+	PerInfo* p = (PerInfo*)realloc(pcon->data, (pcon->capacity + SCALE + n) * sizeof(PerInfo));
+	if (p != NULL)
+	{
+		pcon->data = p;
+		pcon->capacity += SCALE + n;
+		printf("【扩容成功！】\n");
+	}
+	else
+	{
+		perror("realloc");
+	}
 }
 
 //添加联系人
@@ -106,16 +129,20 @@ void addContact(Contact* pcon)
 	int n = 0;
 	printf("请输入你要添加几个联系人：>");
 	scanf("%d", &n);
+	if (pcon->sz + n > pcon->capacity) //通讯录已满，需要扩容
+	{
+		increaseCapcity(pcon, n);
+	}
 	int i = 0;
 	for (i = 0; i < n; i++)
 	{
 		printf("正在添加第%d个联系人：\n", i + 1);
 		printf("请输入姓名：");
 		scanf("%s", pcon->data[pcon->sz].name);
-		printf("请输入年龄：");
-		scanf("%d", &pcon->data[pcon->sz].age);
 		printf("请输入性别：");
 		scanf("%s", pcon->data[pcon->sz].sex);
+		printf("请输入年龄：");
+		scanf("%d", &pcon->data[pcon->sz].age);
 		printf("请输入电话：");
 		scanf("%s", pcon->data[pcon->sz].tele);
 		printf("请输入地址：");
@@ -158,11 +185,11 @@ void deleByCondition(Contact* pcon, int input)
 	}
 	else
 	{
-		printf("%-5s %-10s %-8s %-5s %-15s %-15s\n", "编号", "姓名", "年龄", "性别", "电话", "地址"); //打印标题
+		printf("%-6s %-10s %-8s %-8s %-15s %-15s\n", "编号", "姓名", "性别", "年龄", "电话", "地址"); //打印标题
 		int i = 0;
 		for (i = 1; i <= arr[0]; i++)
 		{
-			printf("%-5d %-10s %-8d %-5s %-15s %-15s\n", i, pcon->data[i].name, pcon->data[i].age, pcon->data[i].sex, pcon->data[i].tele, pcon->data[i].addr);
+			printf("%-6d %-10s %-8s %-8d %-15s %-15s\n", i, pcon->data[arr[i]].name, pcon->data[arr[i]].sex, pcon->data[arr[i]].age, pcon->data[arr[i]].tele, pcon->data[arr[i]].addr);
 		}
 		while (1)
 		{
@@ -172,7 +199,7 @@ void deleByCondition(Contact* pcon, int input)
 			if (n >= 1 && n <= arr[0]) //判断输入是否合法
 			{
 				int k = 0;
-				for (k = arr[1]; k < pcon->sz - 1; k++) //删除
+				for (k = arr[n]; k < pcon->sz - 1; k++) //删除
 				{
 					pcon->data[k] = pcon->data[k + 1];
 				}
@@ -224,6 +251,22 @@ void searchMenu()
 	printf("*****************************************\n");
 }
 
+//打印查找到的联系人
+void printInfo(const Contact* pcon, int* arr)
+{
+	printf("%-10s %-8s %-8s %-15s %-15s\n", "姓名", "性别", "年龄", "电话", "地址"); //打印标题
+	int i = 0;
+	for (i = 1; i <= arr[0]; i++)
+	{
+		printf("%-10s %-8s %-8d %-15s %-15s\n", pcon->data[arr[i]].name, pcon->data[arr[i]].sex, pcon->data[arr[i]].age, pcon->data[arr[i]].tele, pcon->data[arr[i]].addr);
+	}
+	printf("【总共查找到了%d个联系人！】\n", arr[0]);
+	if (arr != NULL)
+	{
+		free(arr);
+	}
+}
+
 //查找联系人
 void searchContact(const Contact* pcon)
 {
@@ -239,27 +282,27 @@ void searchContact(const Contact* pcon)
 		case 1:
 			//按姓名查找
 			arr = searchByName(pcon);
-			input = 0;
+			printInfo(pcon, arr);
 			break;
 		case 2:
 			//按年龄查找
 			arr = searchByAge(pcon);
-			input = 0;
+			printInfo(pcon, arr);
 			break;
 		case 3:
 			//按性别查找
 			arr = searchBySex(pcon);
-			input = 0;
+			printInfo(pcon, arr);
 			break;
 		case 4:
 			//按电话查找
 			arr = searchByTele(pcon);
-			input = 0;
+			printInfo(pcon, arr);
 			break;
 		case 5:
 			//按地址查找
 			arr = searchByAddr(pcon);
-			input = 0;
+			printInfo(pcon, arr);
 			break;
 		case 0:
 			//退出查找
@@ -269,17 +312,6 @@ void searchContact(const Contact* pcon)
 			printf("输入错误，请重新输入！\n");
 		}
 	} while (input);
-	printf("%-10s %-8s %-5s %-15s %-15s\n", "姓名", "年龄", "性别", "电话", "地址"); //打印标题
-	int i = 0;
-	for (i = 1; i <= arr[0]; i++)
-	{
-		printf("%-10s %-8d %-5s %-15s %-15s\n", pcon->data[arr[i]].name, pcon->data[arr[i]].age, pcon->data[arr[i]].sex, pcon->data[arr[i]].tele, pcon->data[arr[i]].addr);
-	}
-	printf("【总共查找到了%d个联系人！】\n", arr[0]);
-	if (arr != NULL)
-	{
-		free(arr);
-	}
 }
 
 //修改联系人菜单
@@ -288,8 +320,8 @@ void modifyMenu()
 	printf("*****************************************\n");
 	printf("*****    请选择你要按什么条件修改  ******\n");
 	printf("*****      1.name       2.age      ******\n");
-	printf("*****      3.sex        4.tele     ******\n");
-	printf("*****      5.addr       0.exit     ******\n");
+	printf("*****      3.tele       4.addr     ******\n");
+	printf("*****      0.exit                  ******\n");
 	printf("*****************************************\n");
 }
 
@@ -303,10 +335,10 @@ void modifyByCondition(Contact* pcon, int input)
 	{
 		printf("请输入姓名：");
 		scanf("%s", pcon->data[arr[1]].name);
-		printf("请输入年龄：");
-		scanf("%d", &pcon->data[arr[1]].age);
 		printf("请输入性别：");
 		scanf("%s", pcon->data[arr[1]].sex);
+		printf("请输入年龄：");
+		scanf("%d", &pcon->data[arr[1]].age);
 		printf("请输入电话：");
 		scanf("%s", pcon->data[arr[1]].tele);
 		printf("请输入地址：");
@@ -319,11 +351,11 @@ void modifyByCondition(Contact* pcon, int input)
 	}
 	else
 	{
-		printf("%-5s %-10s %-8s %-5s %-15s %-15s\n", "编号", "姓名", "年龄", "性别", "电话", "地址"); //打印标题
+		printf("%-6s %-10s %-8s %-8s %-15s %-15s\n", "编号", "姓名", "性别", "年龄", "电话", "地址"); //打印标题
 		int i = 0;
 		for (i = 1; i <= arr[0]; i++)
 		{
-			printf("%-5d %-10s %-8d %-5s %-15s %-15s\n", i, pcon->data[arr[i]].name, pcon->data[arr[i]].age, pcon->data[arr[i]].sex, pcon->data[arr[i]].tele, pcon->data[arr[i]].addr);
+			printf("%-6d %-10s %-8s %-8d %-15s %-15s\n", i, pcon->data[arr[i]].name, pcon->data[arr[i]].sex, pcon->data[arr[i]].age, pcon->data[arr[i]].tele, pcon->data[arr[i]].addr);
 		}
 		while (1)
 		{
@@ -368,7 +400,7 @@ void modifyContact(Contact* pcon)
 		}
 		else if (input == 0)
 		{
-			printf("退出删除联系人！\n");
+			printf("退出修改联系人！\n");
 			break;
 		}
 		else
@@ -381,11 +413,11 @@ void modifyContact(Contact* pcon)
 //显示全部联系人
 void showContact(const Contact* pcon)
 {
-	printf("%-10s %-8s %-5s %-15s %-15s\n", "姓名", "年龄", "性别", "电话", "地址"); //打印标题
+	printf("%-10s %-8s %-8s %-15s %-15s\n", "姓名", "性别", "年龄", "电话", "地址"); //打印标题
 	int i = 0;
 	for (i = 0; i < pcon->sz; i++)
 	{
-		printf("%-10s %-8d %-5s %-15s %-15s\n", pcon->data[i].name, pcon->data[i].age, pcon->data[i].sex, pcon->data[i].tele, pcon->data[i].addr);
+		printf("%-10s %-8s %-8d %-15s %-15s\n", pcon->data[i].name, pcon->data[i].sex, pcon->data[i].age, pcon->data[i].tele, pcon->data[i].addr);
 	}
 	printf("【总共显示了%d个联系人！】\n", pcon->sz);
 }
@@ -393,7 +425,11 @@ void showContact(const Contact* pcon)
 //清空联系人
 void emptyContact(Contact* pcon)
 {
-	initContact(pcon);
+	free(pcon->data);
+	pcon->data = NULL;
+	pcon->capacity = DEFAULT_MAX;
+	pcon->sz = 0;
+	printf("【成功清空通讯录！】\n");
 }
 
 //排序菜单函数
@@ -443,6 +479,11 @@ void sortContact(Contact* pcon)
 			break;
 		default:
 			printf("输入错误，请重新输入！\n");
+		}
+		if (input == 1 && input == 2)
+		{
+			printf("【排序成功！】");
+			showContact(pcon); //将排序结果显示
 		}
 	} while (input);
 }

@@ -1,25 +1,27 @@
-#define _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS 1
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX 100 //通讯录的大小
+#define DEFAULT_MAX 2 //通讯录的默认大小
+#define SCALE 2 //通讯录每次扩容增加的幅度
 
-//人的信息
+//联系人的信息
 typedef struct PerInfo
 {
-	char name[10];
-	int age;
-	char sex[5];
-	char tele[12];
-	char addr[20];
+	char name[10]; //姓名
+	int age; //年龄
+	char sex[5]; //性别
+	char tele[12]; //电话
+	char addr[20]; //地址
 }PerInfo;
 
 //通讯录
 typedef struct Contact
 {
 	int sz; //通讯录中人的个数
-	PerInfo data[MAX]; //存放100个人的信息
+	int capacity; //通讯录最大容量
+	PerInfo* data; //指向存放联系人信息的数组，数组空间动态开辟
 }Contact;
 
 //初始化通讯录
